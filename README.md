@@ -126,5 +126,12 @@ This project is under active development. Contributions are welcome!
 
 ---
 
+## 📎 Project Drive Link
+
+📁 **Google Drive Folder for Docs, Assets, Screenshots And Project Files**:  
+[PlanMate Project Drive](https://drive.google.com/drive/folders/1oJo0dROzcJkCj9__EyeFnR49g1AHiXMr)
+
+---
+
 ## 📜 License
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
