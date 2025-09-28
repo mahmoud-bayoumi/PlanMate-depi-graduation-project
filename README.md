@@ -131,16 +131,47 @@ To build a mobile application for iOS and Android that enables users to:
 
 ---
 
-## 👩‍💻 Team Roles & Responsibilities
+## 👩‍💻 Team Roles & Responsibilities – Detailed
 
-| Team Member                 | Role / Responsibilities                                                                                            |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **Mahmoud Mohamed Bayoumi** | **Team Leader** – Assigns tasks, ensures feature quality, implements **Splash Screen** and **Onboarding** features |
-| **Omar Ahmed Sayed**        | Develops **Login**, **Register**, and **Reset Password** features                                                  |
-| **Yasser Osama Mohamed**    | Implements **Home Screen** and **Favorites** features                                                              |
-| **Emy Ihab Fayez**          | Works on **Event Details** and **User Events List** features                                                       |
-| **Menna Hesham Ali**        | Builds the **Profile** feature                                                                                     |
-| **Fayez Sabry Fayez**       | Develops the **Group Chat** feature                                                                                |
+* **Mahmoud Mohamed Bayoumi** → **Team Leader & AI Features**
+
+  * **Responsibilities**: Assigns tasks, ensures feature quality, develops Splash Screen, Onboarding, and AI Chat.
+  * **Splash Screen & Onboarding**: Provides a smooth first-time user experience with branded splash and guided onboarding.
+  * **AI Chat**: Intelligent assistant recommending events to users and answering planning-related questions in real time.
+  * **Leadership**: Oversees team progress, coordinates feature integration, and ensures timely delivery of high-quality modules.
+
+* **Omar Ahmed Sayed** → **Authentication Module**
+
+  * **Login & Registration**: Secure account creation and sign-in using Firebase Authentication.
+  * **Reset Password**: Allows users to recover accounts via secure email flows.
+  * **Focus**: Ensures robust authentication workflows and user data protection.
+
+* **Yasser Osama Mohamed** → **Event Search & Favorites**
+
+  * **Home Screen**: Centralized hub for upcoming and recent events with intuitive navigation.
+  * **Favorites**: Allows users to bookmark and quickly access important events.
+  * **Focus**: Enhances user experience by providing personalized, easy-to-access event management tools.
+
+* **Emy Ihab Fayez** → **Event Management**
+
+  * **Event Details**: Displays complete event information including date, location, participants, and status.
+  * **User Events List**: Organizes all events the user is hosting or attending in a clear, manageable format.
+  * **Focus**: Ensures seamless event tracking and user-friendly event interactions.
+
+* **Menna Hesham Ali** → **Profile Module**
+
+  * **User Profile**: Allows users to manage personal information, settings, and preferences.
+  * **Focus**: Customizable and secure profile experience supporting personalization and account management.
+
+* **Fayez Sabry Fayez** → **Collaboration Module (Group Chat)**
+
+  * **PlanMate Chat**:
+
+    * Implements a **real-time messaging system** using Firebase Firestore, ensuring low-latency and reliable communication between users.
+    * Supports **one-to-many conversations** within events, allowing participants to share updates, reminders, and discussions in a centralized channel.
+    * Integrates with user profiles for **identity-based messaging** (sender name, avatar, timestamp).
+    * Designed with **scalability and responsiveness**, providing smooth performance across devices.
+    * Enhances event engagement by fostering **seamless collaboration and coordination** among attendees before, during, and after events.
 
 ---
 
@@ -171,3 +202,11 @@ This project is under active development. Contributions are welcome!
 ## 📜 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+This version is fully detailed, professional, and ready for **GitHub, project submission, or documentation purposes**.
+
+If you want, I can **also add a “Key Features Snapshot” table at the top** so someone can glance at each feature per team member in one view—makes the README extremely reader-friendly.
+
+Do you want me to do that next?
