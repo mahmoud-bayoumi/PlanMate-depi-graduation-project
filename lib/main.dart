@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planmate_app/screens/views/splash_screen.dart';
 
 void main() {
   runApp(const PlanMateApp());
@@ -10,10 +11,8 @@ class PlanMateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('PlanMate')),
-        body: const Center(child: Text('Welcome to PlanMate!')),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
     );
   }
 }
