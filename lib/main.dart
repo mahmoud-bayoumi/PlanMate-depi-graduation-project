@@ -2,11 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
-import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
 import 'package:planmate_app/firebase_options.dart';
 import 'package:planmate_app/screens/views/splash_screen.dart';
-import 'package:planmate_app/services/auth_gate.dart';
 import 'package:planmate_app/services/auth_service.dart';
 
 void main() async {

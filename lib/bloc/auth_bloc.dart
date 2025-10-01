@@ -58,6 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorMessage = errorMessage.substring(11);
       }
       emit(AuthError(errorMessage: errorMessage));
+      await Future.delayed(const Duration(milliseconds: 100));
       emit(AuthUnauthenticated());
     }
   }
@@ -75,6 +76,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorMessage = errorMessage.substring(11);
       }
       emit(AuthError(errorMessage: errorMessage));
+      await Future.delayed(const Duration(milliseconds: 100));
       emit(AuthUnauthenticated());
     }
   }

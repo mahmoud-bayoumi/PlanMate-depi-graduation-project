@@ -16,18 +16,22 @@ class AuthService {
         password: password,
       );
       return result.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw Exception('No user found with this email.');
-      } else if (e.code == 'wrong-password') {
-        throw Exception('Incorrect password.');
-      } else if (e.code == 'invalid-email') {
-        throw Exception('Invalid email format.');
+    } on FirebaseAuthException catch (caughtError) {
+      if (caughtError.code == 'user-not-found') {
+        throw Exception('No account found with this email');
+      } else if (caughtError.code == 'wrong-password') {
+        throw Exception('Incorrect password. Please try again');
+      } else if (caughtError.code == 'invalid-email') {
+        throw Exception('Please enter a valid email address');
+      } else if (caughtError.code == 'invalid-credential') {
+        throw Exception('Invalid email or password');
       } else {
-        throw Exception(e.message ?? 'Login failed.');
+        throw Exception(
+          caughtError.message ?? 'Login failed. Please try again',
+        );
       }
-    } catch (e) {
-      throw Exception('An unexpected error occurred.');
+    } catch (caughtError) {
+      throw Exception('Connection error. Please check your internet');
     }
   }
 
@@ -38,25 +42,29 @@ class AuthService {
         password: password,
       );
       return result.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw Exception('Password is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        throw Exception('An account already exists with this email.');
-      } else if (e.code == 'invalid-email') {
-        throw Exception('Invalid email format.');
+    } on FirebaseAuthException catch (caughtError) {
+      if (caughtError.code == 'weak-password') {
+        throw Exception('Password must be at least 6 characters long');
+      } else if (caughtError.code == 'email-already-in-use') {
+        throw Exception(
+          'This email is already registered. Please login instead',
+        );
+      } else if (caughtError.code == 'invalid-email') {
+        throw Exception('Please enter a valid email address');
       } else {
-        throw Exception(e.message ?? 'Sign up failed.');
+        throw Exception(
+          caughtError.message ?? 'Registration failed. Please try again',
+        );
       }
-    } catch (e) {
-      throw Exception('An unexpected error occurred.');
+    } catch (caughtError) {
+      throw Exception('Connection error. Please check your internet');
     }
   }
 
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-    } catch (e) {
+    } catch (caughtError) {
       throw Exception('Sign out failed.');
     }
   }
@@ -64,15 +72,15 @@ class AuthService {
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+    } on FirebaseAuthException catch (caughtError) {
+      if (caughtError.code == 'user-not-found') {
         throw Exception('No user found with this email.');
-      } else if (e.code == 'invalid-email') {
+      } else if (caughtError.code == 'invalid-email') {
         throw Exception('Invalid email format.');
       } else {
-        throw Exception(e.message ?? 'Password reset failed.');
+        throw Exception(caughtError.message ?? 'Password reset failed.');
       }
-    } catch (e) {
+    } catch (caughtError) {
       throw Exception('An unexpected error occurred.');
     }
   }

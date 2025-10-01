@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
 import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
+import 'package:planmate_app/screens/views/home_screen.dart';
+import 'package:planmate_app/screens/views/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -50,7 +52,10 @@ class _SignUpState extends State<SignUpScreen> {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1C1E)),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              ),
             ),
           ),
           body: Padding(
@@ -267,9 +272,14 @@ class _SignUpState extends State<SignUpScreen> {
                     onPressed: isLoading
                         ? null
                         : () {
+                            final firstName = firstNameController.text.trim();
+                            final lastName = lastNameController.text.trim();
                             final email = emailController.text.trim();
                             final password = passwordController.text.trim();
-                            if (email.isEmpty || password.isEmpty) {
+                            if (email.isEmpty ||
+                                password.isEmpty ||
+                                firstName.isEmpty ||
+                                lastName.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Please fill in all fields'),
@@ -277,11 +287,11 @@ class _SignUpState extends State<SignUpScreen> {
                                 ),
                               );
                               return;
-                            } else if (password.length < 12) {
+                            } else if (password.length < 6) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'Password must be at least 12 characters',
+                                    'Password must be at least 6 characters',
                                   ),
                                   backgroundColor: Colors.red,
                                 ),
@@ -295,6 +305,8 @@ class _SignUpState extends State<SignUpScreen> {
                               ),
                             );
 
+                            firstNameController.clear();
+                            lastNameController.clear();
                             emailController.clear();
                             passwordController.clear();
                           },
@@ -333,7 +345,12 @@ class _SignUpState extends State<SignUpScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,

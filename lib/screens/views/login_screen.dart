@@ -5,6 +5,7 @@ import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
 import 'package:planmate_app/screens/views/reset_screen.dart';
 import 'package:planmate_app/screens/views/signup_screen.dart';
+import 'package:planmate_app/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -259,24 +260,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: isLoading
                             ? null
-                            : () {
+                            : () async {
                                 final email = emailController.text.trim();
                                 final password = passwordController.text.trim();
                                 if (email.isEmpty || password.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
-                                        'Please fill in all fields',
+                                        'Please enter both email and password',
                                       ),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
                                   return;
-                                } else if (password.length < 12) {
+                                } else if (password.length < 6) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
-                                        'Password must be at least 12 characters',
+                                        'Password must be at least 6 characters',
                                       ),
                                       backgroundColor: Colors.red,
                                     ),
@@ -423,11 +424,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              if (isLoading)
-                Container(
-                  color: Colors.black26,
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
             ],
           ),
         );

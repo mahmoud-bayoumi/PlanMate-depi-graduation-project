@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
 import 'package:planmate_app/bloc/auth_event.dart';
+import 'package:planmate_app/screens/views/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,10 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context.read<AuthBloc>().add(AuthSignOut());
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
               },
               child: const Text('Logout'),
             ),

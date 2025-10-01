@@ -27,7 +27,11 @@ class _ResetScreenState extends State<ResetScreen> {
           );
         } else if (state is AuthUnauthenticated) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password reset email sent!')),
+            const SnackBar(
+              content: Text('If this email exists, a reset link has been sent'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+            ),
           );
           Navigator.pop(context);
         }
@@ -116,7 +120,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Sign Up Button
+                // Reset Button
                 SizedBox(
                   width: double.infinity,
                   height: 65,
