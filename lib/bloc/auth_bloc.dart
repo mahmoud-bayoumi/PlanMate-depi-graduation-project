@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthUserChanged>(onUserChanged);
     on<AuthSignInWithEmail>(onSignInEmail);
     on<AuthSignUpWithEmail>(onSignUpEmail);
+    on<AuthResetPassword>(onResetPassword);
     on<AuthSignOut>(onSignOut);
   }
 
@@ -69,6 +70,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authService.signUpWithEmail(event.email, event.password);
     } catch (caughtError) {
       String errorMessage = caughtError.toString();
+      if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring(11);
+      }
+      emit(AuthError(errorMessage: errorMessage));
+    }
+  }
+
+  Future<void> onResetPassword(
+    AuthResetPassword event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    try {
+      await _authService.resetPassword(event.email);
+      emit(AuthUnauthenticated()); // Back to login state
+      // You might want a success state here
+    } catch (e) {
+      String errorMessage = e.toString();
       if (errorMessage.startsWith('Exception: ')) {
         errorMessage = errorMessage.substring(11);
       }
