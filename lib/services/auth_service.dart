@@ -60,4 +60,20 @@ class AuthService {
       throw Exception('Sign out failed.');
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw Exception('No user found with this email.');
+      } else if (e.code == 'invalid-email') {
+        throw Exception('Invalid email format.');
+      } else {
+        throw Exception(e.message ?? 'Password reset failed.');
+      }
+    } catch (e) {
+      throw Exception('An unexpected error occurred.');
+    }
+  }
 }
