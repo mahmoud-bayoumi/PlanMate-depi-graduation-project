@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
 import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
+import 'package:planmate_app/screens/views/reset_screen.dart';
 import 'package:planmate_app/screens/views/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -226,7 +227,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Navigate to forgot password
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ResetScreen(),
+                              ),
+                            );
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -254,12 +260,39 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: isLoading
                             ? null
                             : () {
+                                final email = emailController.text.trim();
+                                final password = passwordController.text.trim();
+                                if (email.isEmpty || password.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Please fill in all fields',
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                } else if (password.length < 12) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Password must be at least 12 characters',
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                  return;
+                                }
+
                                 context.read<AuthBloc>().add(
                                   AuthSignInWithEmail(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
+                                    email: email,
+                                    password: password,
                                   ),
                                 );
+
+                                emailController.clear();
+                                passwordController.clear();
                               },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF1D61E7),
@@ -387,14 +420,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    if (isLoading)
-                      Container(
-                        color: Colors.black26,
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
                   ],
                 ),
               ),
+              if (isLoading)
+                Container(
+                  color: Colors.black26,
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
             ],
           ),
         );

@@ -17,13 +17,9 @@ class AuthGate extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (state is AuthAuthenticated) {
-          return HomeScreen();
-        } else if (state is AuthUnauthenticated) {
-          return LoginScreen();
-        } else if (state is AuthError) {
-          return Scaffold(body: Center(child: Text(state.errorMessage)));
+          return const HomeScreen();
         } else {
-          return const Scaffold(body: Center(child: Text("Starting...")));
+          return const LoginScreen();
         }
       },
     );

@@ -29,12 +29,7 @@ class PlanMateApp extends StatelessWidget {
         title: 'PlanMate',
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is AuthInitial) {
-              context.read<AuthBloc>().add(AuthStarted());
-              return SplashScreen();
-            } else {
-              return AuthGate();
-            }
+            return SplashScreen();
           },
         ),
       ),

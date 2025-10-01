@@ -58,6 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorMessage = errorMessage.substring(11);
       }
       emit(AuthError(errorMessage: errorMessage));
+      emit(AuthUnauthenticated());
     }
   }
 
@@ -74,6 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorMessage = errorMessage.substring(11);
       }
       emit(AuthError(errorMessage: errorMessage));
+      emit(AuthUnauthenticated());
     }
   }
 
@@ -84,8 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authService.resetPassword(event.email);
-      emit(AuthUnauthenticated()); // Back to login state
-      // You might want a success state here
+      emit(AuthUnauthenticated());
     } catch (e) {
       String errorMessage = e.toString();
       if (errorMessage.startsWith('Exception: ')) {

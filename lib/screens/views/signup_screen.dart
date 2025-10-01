@@ -267,12 +267,36 @@ class _SignUpState extends State<SignUpScreen> {
                     onPressed: isLoading
                         ? null
                         : () {
+                            final email = emailController.text.trim();
+                            final password = passwordController.text.trim();
+                            if (email.isEmpty || password.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please fill in all fields'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            } else if (password.length < 12) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Password must be at least 12 characters',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
                             context.read<AuthBloc>().add(
                               AuthSignUpWithEmail(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
+                                email: email,
+                                password: password,
                               ),
                             );
+
+                            emailController.clear();
+                            passwordController.clear();
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1D61E7),
