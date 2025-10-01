@@ -1,12 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
 import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
+import 'package:planmate_app/firebase_options.dart';
 import 'package:planmate_app/screens/views/splash_screen.dart';
 import 'package:planmate_app/services/auth_gate.dart';
+import 'package:planmate_app/services/auth_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const PlanMateApp());
 }
 
@@ -15,17 +22,21 @@ class PlanMateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthInitial) {
-            context.read<AuthBloc>().add(AuthStarted());
-            return SplashScreen();
-          } else {
-            return AuthGate();
-          }
-        },
+    return BlocProvider(
+      create: (context) => AuthBloc(AuthService()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'PlanMate',
+        home: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthInitial) {
+              context.read<AuthBloc>().add(AuthStarted());
+              return SplashScreen();
+            } else {
+              return AuthGate();
+            }
+          },
+        ),
       ),
     );
   }
