@@ -15,6 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<AuthBloc>().add(AuthStarted());
     _navigateToAuthGate();
   }
 
@@ -22,8 +23,6 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 5));
 
     if (mounted) {
-      context.read<AuthBloc>().add(AuthStarted());
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const AuthGate()),

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
 import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
-import 'package:planmate_app/screens/views/home_screen.dart';
 import 'package:planmate_app/screens/views/login_screen.dart';
+import 'package:planmate_app/services/auth_gate.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -39,6 +39,11 @@ class _SignUpState extends State<SignUpScreen> {
               content: Text(state.errorMessage),
               backgroundColor: Colors.red,
             ),
+          );
+        } else if (state is AuthAuthenticated) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const AuthGate()),
+            (route) => false,
           );
         }
       },

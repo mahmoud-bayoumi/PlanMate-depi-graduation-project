@@ -5,7 +5,7 @@ import 'package:planmate_app/bloc/auth_event.dart';
 import 'package:planmate_app/bloc/auth_state.dart';
 import 'package:planmate_app/screens/views/reset_screen.dart';
 import 'package:planmate_app/screens/views/signup_screen.dart';
-import 'package:planmate_app/services/auth_service.dart';
+import 'package:planmate_app/services/auth_gate.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  bool rememberMe = false;
+  bool rememberMe = true;
 
   @override
   void dispose() {
@@ -37,6 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
               content: Text(state.errorMessage),
               backgroundColor: Colors.red,
             ),
+          );
+        } else if (state is AuthAuthenticated) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const AuthGate()),
+            (route) => false,
           );
         }
       },

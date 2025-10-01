@@ -19,13 +19,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> onStarted(AuthStarted event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
-
     await _authUser?.cancel();
 
     _authUser = _authService.authStateChanges().listen((userData) {
       add(AuthUserChanged(user: userData));
     });
+
+    final currentUser = _authService.getCurrentUser();
+    if (currentUser != null) {
+      emit(AuthAuthenticated(user: currentUser));
+    } else {
+      emit(AuthUnauthenticated());
+    }
   }
 
   @override
@@ -109,6 +114,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorMessage = errorMessage.substring(11);
       }
       emit(AuthError(errorMessage: errorMessage));
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(AuthUnauthenticated());
     }
   }
 }
