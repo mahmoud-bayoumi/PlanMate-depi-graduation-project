@@ -8,6 +8,15 @@ abstract class AuthEvent extends Equatable {
 
 class AuthStarted extends AuthEvent {}
 
+class AuthUserChanged extends AuthEvent {
+  final User? user;
+
+  AuthUserChanged({required this.user});
+
+  @override
+  List<Object?> get props => [user];
+}
+
 class AuthSignInWithEmail extends AuthEvent {
   final String email;
   final String password;
@@ -26,15 +35,6 @@ class AuthSignUpWithEmail extends AuthEvent {
 
   @override
   List<Object?> get props => [email, password];
-}
-
-class AuthUserChanged extends AuthEvent {
-  final User? user;
-
-  AuthUserChanged(this.user);
-
-  @override
-  List<Object?> get props => [user];
 }
 
 class AuthSignOut extends AuthEvent {}
