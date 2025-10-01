@@ -1,7 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planmate_app/bloc/auth_bloc.dart';
+import 'package:planmate_app/bloc/auth_event.dart';
+import 'package:planmate_app/services/auth_gate.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToAuthGate();
+  }
+
+  void _navigateToAuthGate() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (mounted) {
+      context.read<AuthBloc>().add(AuthStarted());
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthGate()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,26 +47,7 @@ class SplashScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Text('Welcome to PlanMate!', style: TextStyle(fontSize: 24)),
             const SizedBox(height: 20),
-            Container(
-              width: 200,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Color(0xFF1D61E7),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Continue',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
+            const CircularProgressIndicator(),
           ],
         ),
       ),
