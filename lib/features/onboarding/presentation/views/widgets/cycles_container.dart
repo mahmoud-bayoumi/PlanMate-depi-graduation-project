@@ -9,12 +9,16 @@ class CyclesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/circles.png'),
         ),
       ),
+      width: width,
+      height: height * 0.5,
       child: Image.asset(image),
     );
   }

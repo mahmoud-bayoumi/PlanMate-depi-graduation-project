@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:planmate_app/core/utils/constants.dart';
 
 import 'widgets/cycles_container.dart';
 import 'widgets/onboarding_description.dart';
 import 'widgets/onboarding_title_text.dart';
 
-class OnboardingView extends StatelessWidget {
+class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
+
+  @override
+  State<OnboardingView> createState() => _OnboardingViewState();
+}
+
+class _OnboardingViewState extends State<OnboardingView> {
+  final PageController _controller = PageController();
+  bool isLastPage = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        controller: _controller,
+        onPageChanged: (index) {
+          setState(() {
+            isLastPage = index == 1;
+          });
+        },
         children: [
           buildPage(
             imagePath: 'assets/images/illustrations.png',
             title: 'Easy to find events',
             description:
-                'Connect with people who share your interests. Our platform helps you expand your network by meeting new and like-minded individuals.',
+                'Discover a variety of events tailored to your interests. Our platform makes it simple to browse and find what matters most to you.',
           ),
           buildPage(
-            imagePath: 'assets/images/illustrations.png',
-            title: 'Easy to find events',
+            imagePath: 'assets/images/illustration.png',
+            title: 'Meet with new folks',
             description:
                 'Connect with people who share your interests. Our platform helps you expand your network by meeting new and like-minded individuals.',
           ),
