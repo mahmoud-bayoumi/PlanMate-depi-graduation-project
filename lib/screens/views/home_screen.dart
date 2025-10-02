@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planmate_app/bloc/auth_bloc.dart';
@@ -9,13 +10,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Home Screen'), centerTitle: true),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Welcome!', style: TextStyle(fontSize: 24)),
+            Text(
+              'Welcome, ${user?.email ?? user?.displayName ?? 'User'}',
+              style: TextStyle(fontSize: 24),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

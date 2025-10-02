@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -61,11 +62,29 @@ class AuthService {
     }
   }
 
-  Future<void> signOut() async {
+  Future<User?> signInWithGoogle() async {
     try {
-      await _auth.signOut();
+      final googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        throw Exception('Google sign-in was cancelled');
+      }
+
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential result = await _auth.signInWithCredential(credential);
+      return result.user;
+    } on FirebaseAuthException catch (caughtError) {
+      throw Exception(
+        caughtError.message ?? 'Google sign-in failed. Please try again',
+      );
     } catch (caughtError) {
-      throw Exception('Sign out failed.');
+      throw Exception('Google sign-in failed. Please try again');
     }
   }
 
@@ -82,6 +101,16 @@ class AuthService {
       }
     } catch (caughtError) {
       throw Exception('An unexpected error occurred.');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut();
+      await _auth.signOut();
+    } catch (caughtError) {
+      throw Exception('Sign out failed.');
     }
   }
 }

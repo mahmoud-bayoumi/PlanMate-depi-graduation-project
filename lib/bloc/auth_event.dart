@@ -37,7 +37,7 @@ class AuthSignUpWithEmail extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
-class AuthSignOut extends AuthEvent {}
+class AuthSignInWithGoogle extends AuthEvent {}
 
 class AuthResetPassword extends AuthEvent {
   final String email;
@@ -47,3 +47,5 @@ class AuthResetPassword extends AuthEvent {
   @override
   List<Object?> get props => [email];
 }
+
+class AuthSignOut extends AuthEvent {}

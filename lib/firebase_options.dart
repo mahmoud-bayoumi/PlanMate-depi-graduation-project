@@ -64,6 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '254371130671',
     projectId: 'planmate-depi',
     storageBucket: 'planmate-depi.firebasestorage.app',
+    iosClientId: '254371130671-l7ihsblq9vk5hg31qm7rlp9gom2oeplj.apps.googleusercontent.com',
     iosBundleId: 'com.example.planmateApp',
   );
 
@@ -73,6 +74,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '254371130671',
     projectId: 'planmate-depi',
     storageBucket: 'planmate-depi.firebasestorage.app',
+    iosClientId: '254371130671-l7ihsblq9vk5hg31qm7rlp9gom2oeplj.apps.googleusercontent.com',
     iosBundleId: 'com.example.planmateApp',
   );
 
@@ -85,4 +87,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'planmate-depi.firebasestorage.app',
     measurementId: 'G-SET8L69V6W',
   );
+
 }

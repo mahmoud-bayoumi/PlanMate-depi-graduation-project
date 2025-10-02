@@ -338,9 +338,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         // Google Button
                         GestureDetector(
-                          onTap: () {
-                            // Handle Google login
-                          },
+                          onTap: isLoading
+                              ? null
+                              : () {
+                                  context.read<AuthBloc>().add(
+                                    AuthSignInWithGoogle(),
+                                  );
+                                },
                           child: Container(
                             width: 160,
                             height: 60,

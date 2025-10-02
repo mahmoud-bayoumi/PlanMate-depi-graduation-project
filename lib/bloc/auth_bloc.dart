@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthUserChanged>(onUserChanged);
     on<AuthSignInWithEmail>(onSignInEmail);
     on<AuthSignUpWithEmail>(onSignUpEmail);
+    on<AuthSignInWithGoogle>(onSignInGoogle);
     on<AuthResetPassword>(onResetPassword);
     on<AuthSignOut>(onSignOut);
   }
@@ -75,6 +76,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authService.signUpWithEmail(event.email, event.password);
+    } catch (caughtError) {
+      String errorMessage = caughtError.toString();
+      if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring(11);
+      }
+      emit(AuthError(errorMessage: errorMessage));
+      await Future.delayed(const Duration(milliseconds: 100));
+      emit(AuthUnauthenticated());
+    }
+  }
+
+  Future<void> onSignInGoogle(
+    AuthSignInWithGoogle event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    try {
+      await _authService.signInWithGoogle();
     } catch (caughtError) {
       String errorMessage = caughtError.toString();
       if (errorMessage.startsWith('Exception: ')) {
