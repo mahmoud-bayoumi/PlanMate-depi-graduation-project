@@ -56,6 +56,10 @@ class _SplashViewState extends State<SplashView>
             end: 100,
           ).evaluate(_anim);
 
+          final double logoScale = Tween<double>(
+            begin: 0.2,
+            end: 1.0,
+          ).evaluate(_anim);
           return Center(
             child: Container(
               width: width,
@@ -65,10 +69,13 @@ class _SplashViewState extends State<SplashView>
                 borderRadius: BorderRadius.circular(12 * _anim.value),
               ),
               child: Center(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 120,
-                  height: 120,
+                child: Transform.scale(
+                  scale: logoScale,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 120,
+                    height: 120,
+                  ),
                 ),
               ),
             ),
