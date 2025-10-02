@@ -4,14 +4,14 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:planmate_app/features/ai_chat/presentation/views/widgets/chat_input.dart';
 import 'package:planmate_app/features/ai_chat/presentation/views/widgets/message_list.dart';
 
-class ChatView extends StatefulWidget {
-  const ChatView({super.key});
+class PlanMateAIChatView extends StatefulWidget {
+  const PlanMateAIChatView({super.key});
 
   @override
-  State<ChatView> createState() => _ChatViewState();
+  State<PlanMateAIChatView> createState() => _PlanMateAIChatViewState();
 }
 
-class _ChatViewState extends State<ChatView> {
+class _PlanMateAIChatViewState extends State<PlanMateAIChatView> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> _messages = [];
 

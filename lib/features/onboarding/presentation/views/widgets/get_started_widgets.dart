@@ -25,7 +25,7 @@ class GetStartedButton extends StatelessWidget {
         onPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const ChatView()),
+            MaterialPageRoute(builder: (_) => const PlanMateAIChatView()),
           );
         },
         child: const Text(
