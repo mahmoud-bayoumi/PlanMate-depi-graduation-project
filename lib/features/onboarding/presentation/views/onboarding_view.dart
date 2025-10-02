@@ -41,6 +41,99 @@ class _OnboardingViewState extends State<OnboardingView> {
           ),
         ],
       ),
+      bottomSheet: isLastPage
+          // Last Page → Big Button
+          ? Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 40.0,
+                horizontal: 8,
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(350, 60),
+                  backgroundColor: const Color(kPrimaryColor),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Placeholder()),
+                  );
+                },
+                child: const Text(
+                  'Get Started',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            )
+          // First Page → Indicator + Next Button
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 40,
+              ),
+              child: Row(
+                children: [
+                  // Custom Page Indicator
+                  Row(
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: !isLastPage ? 30 : 7,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: const Color(kPrimaryColor),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: isLastPage ? 30 : 7,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff4090FE),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+
+                  // Next Button
+                  TextButton(
+                    onPressed: () {
+                      _controller.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                    child: Row(
+                      children: const [
+                        Text(
+                          "Next",
+                          style: TextStyle(
+                            color: Color(kPrimaryColor),
+                            fontSize: 18,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_right_alt,
+                          color: Color(kPrimaryColor),
+                          size: 36,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -77,58 +170,3 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 }
-
-/* 
-   Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 7,
-                      decoration: BoxDecoration(
-                        color: Color(kPrimaryColor),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Container(
-                      width: 7,
-                      height: 7,
-                      decoration: BoxDecoration(
-                        color: Color(0xff4090FE),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    children: [
-                      Text(
-                        'Next',
-                        style: TextStyle(
-                          color: Color(kPrimaryColor),
-                          fontSize: 18,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_right_alt,
-                        color: Color(kPrimaryColor),
-                        size: 36,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-
-*/
