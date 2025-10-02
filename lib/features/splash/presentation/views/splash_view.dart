@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planmate_app/core/utils/constants.dart';
 
+import '../../../onboarding/presentation/views/onboarding_view.dart';
+
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
@@ -29,6 +31,15 @@ class _SplashViewState extends State<SplashView>
 
     Future.delayed(const Duration(milliseconds: 300), () {
       _controller.forward();
+    });
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const OnboardingView()),
+        );
+      }
     });
   }
 
