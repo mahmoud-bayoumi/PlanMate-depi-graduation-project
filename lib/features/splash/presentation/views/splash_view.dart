@@ -15,6 +15,7 @@ class SplashView extends StatelessWidget {
             color: Color(kPrimaryColor),
             borderRadius: BorderRadius.circular(12),
           ),
+          child: Image.asset('assets/images/logo.png'),
         ),
       ),
     );
