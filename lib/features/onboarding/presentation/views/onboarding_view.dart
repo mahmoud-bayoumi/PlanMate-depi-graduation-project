@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
 import 'package:planmate_app/features/onboarding/presentation/views/widgets/get_started_widgets.dart';
+import 'package:planmate_app/features/onboarding/presentation/views/widgets/next_text_button.dart';
 
 import 'widgets/cycles_container.dart';
+import 'widgets/dots_row.dart';
 import 'widgets/onboarding_description.dart';
 import 'widgets/onboarding_title_text.dart';
 
@@ -54,56 +55,11 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: Row(
                 children: [
                   // Custom Page Indicator
-                  Row(
-                    children: [
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: !isLastPage ? 30 : 7,
-                        height: 7,
-                        decoration: BoxDecoration(
-                          color: const Color(kPrimaryColor),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: isLastPage ? 30 : 7,
-                        height: 7,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff4090FE),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                    ],
-                  ),
+                  DotsRow(isLastPage: isLastPage),
                   const Spacer(),
 
                   // Next Button
-                  TextButton(
-                    onPressed: () {
-                      _controller.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut,
-                      );
-                    },
-                    child: Row(
-                      children: const [
-                        Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Color(kPrimaryColor),
-                            fontSize: 18,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_right_alt,
-                          color: Color(kPrimaryColor),
-                          size: 36,
-                        ),
-                      ],
-                    ),
-                  ),
+                  NextTextButton(controller: _controller),
                 ],
               ),
             ),
