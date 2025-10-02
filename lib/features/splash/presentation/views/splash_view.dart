@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
+import 'package:planmate_app/features/splash/presentation/views/widgets/logo_animated_builder.dart';
 
 import '../../../onboarding/presentation/views/onboarding_view.dart';
 
@@ -18,7 +18,10 @@ class _SplashViewState extends State<SplashView>
   @override
   void initState() {
     super.initState();
+    _setupAnimation();
+  }
 
+  void _setupAnimation() {
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -54,44 +57,10 @@ class _SplashViewState extends State<SplashView>
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          final double width = Tween<double>(
-            begin: size.width,
-            end: 100,
-          ).evaluate(_anim);
-
-          final double height = Tween<double>(
-            begin: size.height,
-            end: 100,
-          ).evaluate(_anim);
-
-          final double logoScale = Tween<double>(
-            begin: 0.2,
-            end: 1.0,
-          ).evaluate(_anim);
-          return Center(
-            child: Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                color: const Color(kPrimaryColor),
-                borderRadius: BorderRadius.circular(12 * _anim.value),
-              ),
-              child: Center(
-                child: Transform.scale(
-                  scale: logoScale,
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 120,
-                    height: 120,
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+      body: LogoAnimatedBuilder(
+        controller: _controller,
+        size: size,
+        anim: _anim,
       ),
     );
   }
