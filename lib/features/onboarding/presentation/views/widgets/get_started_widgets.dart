@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planmate_app/core/utils/constants.dart';
+import 'package:planmate_app/features/ai_chat/presentation/views/ai_chat_view.dart';
 
 class GetStartedButton extends StatelessWidget {
   const GetStartedButton({
@@ -24,7 +25,7 @@ class GetStartedButton extends StatelessWidget {
         onPressed: () {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const Placeholder()),
+            MaterialPageRoute(builder: (_) => const ChatView()),
           );
         },
         child: const Text(
