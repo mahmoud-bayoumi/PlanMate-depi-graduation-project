@@ -40,17 +40,40 @@ class _SplashViewState extends State<SplashView>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: Color(kPrimaryColor),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Image.asset('assets/images/logo.png'),
-        ),
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final double width = Tween<double>(
+            begin: size.width,
+            end: 100,
+          ).evaluate(_anim);
+
+          final double height = Tween<double>(
+            begin: size.height,
+            end: 100,
+          ).evaluate(_anim);
+
+          return Center(
+            child: Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                color: const Color(kPrimaryColor),
+                borderRadius: BorderRadius.circular(12 * _anim.value),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 120,
+                  height: 120,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
