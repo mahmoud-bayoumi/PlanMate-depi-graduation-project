@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planmate_app/features/onboarding/presentation/views/widgets/get_started_widgets.dart';
-import 'package:planmate_app/features/onboarding/presentation/views/widgets/next_text_button.dart';
-
 import 'widgets/cycles_container.dart';
-import 'widgets/dots_row.dart';
+import 'widgets/first_page_bottom_sheet.dart';
 import 'widgets/onboarding_description.dart';
 import 'widgets/onboarding_title_text.dart';
 
@@ -47,21 +45,9 @@ class _OnboardingViewState extends State<OnboardingView> {
           // Last Page → Big Button
           ? GetStartedButton()
           // First Page → Indicator + Next Button
-          : Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 40,
-              ),
-              child: Row(
-                children: [
-                  // Custom Page Indicator
-                  DotsRow(isLastPage: isLastPage),
-                  const Spacer(),
-
-                  // Next Button
-                  NextTextButton(controller: _controller),
-                ],
-              ),
+          : FIrstPageBottomSheet(
+              isLastPage: isLastPage,
+              controller: _controller,
             ),
     );
   }
