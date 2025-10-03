@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:planmate_app/features/group_chat/presentation/views/group_chat_view.dart';
-import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
+import 'features/group_chat/presentation/views/group_chat_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,7 @@ class PlanMateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: GroupChatView(),
     );

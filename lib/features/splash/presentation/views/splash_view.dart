@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/splash/presentation/views/widgets/logo_animated_builder.dart';
+import 'widgets/logo_animated_builder.dart';
 
 import '../../../onboarding/presentation/views/onboarding_view.dart';
 

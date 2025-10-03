@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:planmate_app/features/ai_chat/presentation/views/widgets/chat_input.dart';
-import 'package:planmate_app/features/ai_chat/presentation/views/widgets/message_list.dart';
+import 'widgets/chat_input.dart';
+import 'widgets/message_list.dart';
 
 class PlanMateAIChatView extends StatefulWidget {
   const PlanMateAIChatView({super.key});

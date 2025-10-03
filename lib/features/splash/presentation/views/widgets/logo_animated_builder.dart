@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/splash/presentation/views/widgets/custom_animated_logo_container.dart';
+import 'custom_animated_logo_container.dart';
 
 class LogoAnimatedBuilder extends StatelessWidget {
   const LogoAnimatedBuilder({

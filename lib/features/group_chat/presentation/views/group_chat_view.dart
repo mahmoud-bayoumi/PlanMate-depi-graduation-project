@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
+import '../../../../core/utils/constants.dart';
 
 class GroupChatView extends StatelessWidget {
   const GroupChatView({super.key});
@@ -14,7 +14,7 @@ class GroupChatView extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
+        title: const Text(
           'Event Group Chat',
           style: TextStyle(
             color: Color(kPrimaryColor),

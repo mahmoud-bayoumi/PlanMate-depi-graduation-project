@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
-import 'package:planmate_app/features/ai_chat/presentation/views/ai_chat_view.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../ai_chat/presentation/views/ai_chat_view.dart';
 
 class GetStartedButton extends StatelessWidget {
   const GetStartedButton({

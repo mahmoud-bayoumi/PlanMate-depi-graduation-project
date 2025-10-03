@@ -11,7 +11,7 @@ class OnboardingTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 28,
       ),

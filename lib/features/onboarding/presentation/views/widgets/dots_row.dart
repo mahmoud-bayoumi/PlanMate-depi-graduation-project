@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
+import '../../../../../core/utils/constants.dart';
 
 class DotsRow extends StatelessWidget {
   const DotsRow({
