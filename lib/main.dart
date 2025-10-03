@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:planmate_app/features/group_chat/presentation/views/groub_chat_view.dart';
+import 'package:planmate_app/features/group_chat/presentation/views/group_chat_view.dart';
 import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
 
 void main() async {
