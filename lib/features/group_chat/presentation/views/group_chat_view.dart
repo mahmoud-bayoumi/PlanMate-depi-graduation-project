@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/utils/constants.dart';
+import 'widgets/group_chat_body.dart';
 
 class GroupChatView extends StatelessWidget {
   const GroupChatView({super.key});
@@ -23,7 +24,7 @@ class GroupChatView extends StatelessWidget {
           ),
         ),
       ),
-      
+      body: const GroupChatBody(),
     );
   }
 }
