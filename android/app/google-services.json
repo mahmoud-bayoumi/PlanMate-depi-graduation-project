@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1009965854679",
+    "project_id": "planmate-e8a59",
+    "storage_bucket": "planmate-e8a59.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009965854679:android:36b09ad01193a6c692e592",
+        "android_client_info": {
+          "package_name": "com.example.planmate_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuUaNDzuxYhhmw90ka0MiypneJGk_tEeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
