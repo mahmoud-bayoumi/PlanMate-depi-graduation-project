@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
 //=======
 import 'package:planmate_app/event_details.dart';
-import 'package:planmate_app/navigate_main_view.dart';
+import 'package:planmate_app/features/navigation_bar/presentation/view/navigate_main_view.dart';
 import 'package:planmate_app/your_event_list_screen.dart';
 //>>>>>>> Stashed changes
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planmate_app/core/utils/constants.dart';
 import 'package:planmate_app/features/favourites/presentation/view/favourite_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/home_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/widgets/icon_with_under_line.dart';
@@ -32,7 +33,7 @@ class _NavigateMainViewState extends State<NavigateMainView> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.amber,
-        selectedItemColor: Color(0xff1D61E7),
+        selectedItemColor: Color(kPrimaryColor),
         unselectedItemColor: Color(0xff979C9E),
         iconSize: 28,
         showSelectedLabels: false,

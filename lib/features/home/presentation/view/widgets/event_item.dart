@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planmate_app/core/utils/constants.dart';
 import 'package:planmate_app/event_details.dart';
 
 class EventItem extends StatelessWidget {
@@ -116,7 +117,7 @@ class FavouriteIcon extends StatelessWidget {
         child: IconButton(
           icon: Icon(
             isFav ? Icons.star : Icons.star_border_purple500_sharp,
-            color: Color(0xff1D61E7),
+            color: Color(kPrimaryColor),
             size: 30,
           ),
           onPressed: () {},
