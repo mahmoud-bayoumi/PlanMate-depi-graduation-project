@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planmate_app/features/favourites/presentation/view/favourite_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/home_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/widgets/icon_with_under_line.dart';
+import 'package:planmate_app/your_event_list_screen.dart';
 
 class NavigateMainView extends StatefulWidget {
   const NavigateMainView({
@@ -24,7 +25,7 @@ class _NavigateMainViewState extends State<NavigateMainView> {
           children: [
             HomeViewBody(),
             FavouriteViewBody(),
-            Text("eventList"),
+            EventsListScreen(),
             Text("profile"),
           ],
         ),
