@@ -3,6 +3,7 @@ import 'package:planmate_app/core/utils/constants.dart';
 import 'package:planmate_app/features/favourites/presentation/view/favourite_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/home_view_body.dart';
 import 'package:planmate_app/features/home/presentation/view/widgets/icon_with_under_line.dart';
+import 'package:planmate_app/features/profile/presentation/views/profile_view.dart';
 import 'package:planmate_app/your_event_list_screen.dart';
 
 class NavigateMainView extends StatefulWidget {
@@ -27,7 +28,7 @@ class _NavigateMainViewState extends State<NavigateMainView> {
             HomeViewBody(),
             FavouriteViewBody(),
             EventsListScreen(),
-            Text("profile"),
+            ProfileView(),
           ],
         ),
       ),
