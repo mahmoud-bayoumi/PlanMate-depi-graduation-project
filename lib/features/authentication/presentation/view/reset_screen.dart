@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/bloc/auth_bloc.dart';
-import 'package:planmate_app/bloc/auth_event.dart';
-import 'package:planmate_app/bloc/auth_state.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
 
 class ResetScreen extends StatefulWidget {
   const ResetScreen({super.key});

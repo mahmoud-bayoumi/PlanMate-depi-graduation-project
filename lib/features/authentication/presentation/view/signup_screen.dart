@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/bloc/auth_bloc.dart';
-import 'package:planmate_app/bloc/auth_event.dart';
-import 'package:planmate_app/bloc/auth_state.dart';
-import 'package:planmate_app/screens/views/login_screen.dart';
-import 'package:planmate_app/services/auth_gate.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
+import 'package:planmate_app/features/authentication/presentation/view/login_screen.dart';
+import 'package:planmate_app/features/navigation_bar/presentation/view/navigate_main_view.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -42,7 +42,7 @@ class _SignUpState extends State<SignUpScreen> {
           );
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const AuthGate()),
+            MaterialPageRoute(builder: (context) => const NavigateMainView()),
             (route) => false,
           );
         }
@@ -281,6 +281,7 @@ class _SignUpState extends State<SignUpScreen> {
                             final lastName = lastNameController.text.trim();
                             final email = emailController.text.trim();
                             final password = passwordController.text.trim();
+                            final birthDate = "1-1-2000";
                             if (email.isEmpty ||
                                 password.isEmpty ||
                                 firstName.isEmpty ||
@@ -307,9 +308,11 @@ class _SignUpState extends State<SignUpScreen> {
                               AuthSignUpWithEmail(
                                 email: email,
                                 password: password,
+                                firstName: firstName,
+                                lastName: lastName,
+                                birthDate: birthDate,
                               ),
                             );
-
                             firstNameController.clear();
                             lastNameController.clear();
                             emailController.clear();

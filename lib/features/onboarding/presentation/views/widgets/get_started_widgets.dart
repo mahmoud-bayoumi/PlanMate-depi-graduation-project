@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planmate_app/core/utils/constants.dart';
 //<<<<<<< Updated upstream
-import 'package:planmate_app/features/ai_chat/presentation/views/ai_chat_view.dart';
+import 'package:planmate_app/features/authentication/services/auth_gate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //=======
 //>>>>>>> Stashed changes
 
@@ -25,15 +26,16 @@ class GetStartedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-//<<<<<<< Updated upstream
-            MaterialPageRoute(builder: (_) => const PlanMateAIChatView()),
-//=======
-            //MaterialPageRoute(builder: (_) => const Placeholder()),
-//>>>>>>> Stashed changes
-          );
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('hasSeenOnboarding', true);
+
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const AuthGate()),
+            );
+          }
         },
         child: const Text(
           'Get Started',

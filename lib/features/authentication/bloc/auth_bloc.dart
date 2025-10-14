@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/bloc/auth_event.dart';
-import 'package:planmate_app/bloc/auth_state.dart';
-import 'package:planmate_app/services/auth_service.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
+import 'package:planmate_app/features/authentication/services/auth_service.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
@@ -75,7 +75,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      await _authService.signUpWithEmail(event.email, event.password);
+      await _authService.signUpWithEmail(
+        event.email,
+        event.password,
+        event.firstName,
+        event.lastName,
+        event.birthDate,
+      );
     } catch (caughtError) {
       String errorMessage = caughtError.toString();
       if (errorMessage.startsWith('Exception: ')) {

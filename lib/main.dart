@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:planmate_app/bloc/auth_bloc.dart';
-import 'package:planmate_app/bloc/auth_state.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
+import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
 import 'package:planmate_app/firebase_options.dart';
-import 'package:planmate_app/screens/views/splash_screen.dart';
-import 'package:planmate_app/services/auth_service.dart';
-
-import 'package:planmate_app/features/navigation_bar/presentation/view/navigate_main_view.dart';
+import 'package:planmate_app/features/authentication/services/auth_service.dart';
 // Optional additional imports (uncomment if needed):
 // import 'package:planmate_app/event_details.dart';
 // import 'package:planmate_app/your_event_list_screen.dart';
@@ -29,17 +27,12 @@ class PlanMateApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(AuthService()),
+      create: (context) => AuthBloc(AuthService())..add(AuthStarted()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'PlanMate',
         theme: ThemeData(fontFamily: 'Poppins'),
-        home: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            // You can change this to SplashScreen() or NavigateMainView()
-            return const NavigateMainView(); // or SplashScreen()
-          },
-        ),
+        home: const SplashView(),
       ),
     );
   }

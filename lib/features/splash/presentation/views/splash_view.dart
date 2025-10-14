@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:planmate_app/features/authentication/services/auth_gate.dart';
 import 'package:planmate_app/features/splash/presentation/views/widgets/logo_animated_builder.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../onboarding/presentation/views/onboarding_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -38,12 +39,28 @@ class _SplashViewState extends State<SplashView>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const OnboardingView()),
-        );
+        _checkOnboardingStatus();
       }
     });
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
+
+    if (!mounted) return;
+
+    if (hasSeenOnboarding) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const AuthGate()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingView()),
+      );
+    }
   }
 
   @override

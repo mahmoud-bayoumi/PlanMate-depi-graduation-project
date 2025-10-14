@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:planmate_app/features/authentication/services/user_firestore_service.dart';
 
 class AuthService {
+  final _userService = UserService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
@@ -36,11 +38,23 @@ class AuthService {
     }
   }
 
-  Future<User?> signUpWithEmail(String email, String password) async {
+  Future<User?> signUpWithEmail(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String birthDate,
+  ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
+      );
+      await _userService.createUser(
+        result.user!.uid,
+        firstName,
+        lastName,
+        birthDate,
       );
       return result.user;
     } on FirebaseAuthException catch (caughtError) {

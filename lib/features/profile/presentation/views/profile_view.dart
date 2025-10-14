@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
+import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
+import 'package:planmate_app/features/authentication/presentation/view/login_screen.dart';
 import 'package:planmate_app/features/profile/presentation/views/widgets/profile_avatar.dart';
 import 'package:planmate_app/features/profile/presentation/views/widgets/profile_menu_item.dart';
 import 'manage_profile_view.dart';
@@ -30,13 +34,13 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 25),
-              
+
               const ProfileAvatar(),
-              
+
               const SizedBox(height: 24),
-              
+
               Text(
                 'User Name',
                 style: TextStyle(
@@ -47,9 +51,9 @@ class ProfileView extends StatelessWidget {
                   letterSpacing: 0.5,
                 ),
               ),
-              
+
               const SizedBox(height: 60),
-              
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
@@ -111,6 +115,13 @@ class ProfileView extends StatelessWidget {
                       title: 'Logout',
                       onTap: () {
                         // Add logout logic here
+                        context.read<AuthBloc>().add(AuthSignOut());
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
                       },
                       showArrow: false,
                     ),
