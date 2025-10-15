@@ -13,6 +13,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   StreamSubscription? _messagesSubscription;
+  User? get currentUser => _auth.currentUser;
 
   ChatBloc() : super(ChatInitial()) {
     on<LoadMessages>(_onLoadMessages);

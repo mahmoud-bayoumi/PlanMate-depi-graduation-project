@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../bloc/chat_bloc.dart';
+import '../../bloc/chat_event.dart';
+import '../../bloc/chat_state.dart';
 import 'chat_bubble.dart';
 
-class GroupChatBody extends StatelessWidget {
+class GroupChatBody extends StatefulWidget {
   const GroupChatBody({super.key});
+
+  @override
+  State<GroupChatBody> createState() => _GroupChatBodyState();
+}
+
+class _GroupChatBodyState extends State<GroupChatBody> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -11,76 +23,40 @@ class GroupChatBody extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: ListView(
-              children: const [
-                Divider(thickness: 1, color: Color(0xffECECEC)),
-                ChatBubble(
-                  isMe: false,
-                  message: "Hello everyone! Excited for the event.",
-                  username: "Bayoumi",
-                  userColor: Colors.red,
-                ),
-                ChatBubble(
-                  isMe: true,
-                  message: "Hi Bayoumi! Me too.",
-                  username: "You",
-                  userColor: Colors.blue,
-                ),
-                ChatBubble(
-                  isMe: false,
-                  message: "Looking forward to meeting you all!",
-                  username: "Yasser",
-                  userColor: Colors.green,
-                ),
-                ChatBubble(
-                  isMe: true,
-                  message: "Same here, Yasser!",
-                  username: "You",
-                  userColor: Colors.blue,
-                ),
-                ChatBubble(
-                  isMe: false,
-                  message: "Don't forget to bring your tickets.",
-                  username: "Omar",
-                  userColor: Colors.orange,
-                ),
-                ChatBubble(
-                  isMe: true,
-                  message: "Got it, Omar. See you all there!",
-                  username: "You",
-                  userColor: Colors.blue,
-                ),
-                ChatBubble(
-                  isMe: false,
-                  message: "Don't forget to bring your tickets.",
-                  username: "Omar",
-                  userColor: Colors.orange,
-                ),
-                ChatBubble(
-                  isMe: true,
-                  message: "Got it, Omar. See you all there!",
-                  username: "You",
-                  userColor: Colors.blue,
-                ),
-                ChatBubble(
-                  isMe: false,
-                  message: "Don't forget to bring your tickets.",
-                  username: "Omar",
-                  userColor: Colors.orange,
-                ),
-                ChatBubble(
-                  isMe: true,
-                  message: "Got it, Omar. See you all there!",
-                  username: "You",
-                  userColor: Colors.blue,
-                ),
-                ChatBubble(
-                  isMe: false,
-                  message: "Looking forward to it!",
-                  username: "Charlie",
-                  userColor: Colors.orange,
-                ),
-              ],
+            child: BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                if (state is ChatLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ChatError) {
+                  return Center(child: Text(state.message));
+                } else if (state is ChatLoaded) {
+                  final messages = state.messages;
+
+                  if (messages.isEmpty) {
+                    return const Center(child: Text("No messages yet."));
+                  }
+
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final msg = messages[index];
+                      final currentUserId = context.read<ChatBloc>().currentUser?.uid;
+
+
+                      final isMe = msg['senderId'] == currentUserId;
+                      return ChatBubble(
+                        isMe: isMe,
+                        message: msg['text'] ?? '',
+                        username: isMe ? 'You' : (msg['senderId'] ?? 'Unknown'),
+                        userColor: isMe ? Colors.blue : Colors.orange,
+                      );
+                    },
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
             ),
           ),
         ),
@@ -95,6 +71,7 @@ class GroupChatBody extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  controller: _controller,
                   decoration: InputDecoration(
                     hintText: "Type a message...",
                     border: OutlineInputBorder(
@@ -112,9 +89,15 @@ class GroupChatBody extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               CircleAvatar(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(kPrimaryColor),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final text = _controller.text.trim();
+                    if (text.isNotEmpty) {
+                      context.read<ChatBloc>().add(SendMessage(text));
+                      _controller.clear();
+                    }
+                  },
                   icon: const Icon(Icons.send, color: Colors.white),
                 ),
               ),
