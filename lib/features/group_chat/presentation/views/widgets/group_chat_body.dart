@@ -41,15 +41,28 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final msg = messages[index];
-                      final currentUserId = context.read<ChatBloc>().currentUser?.uid;
-
+                      final currentUserId = context
+                          .read<ChatBloc>()
+                          .currentUser
+                          ?.uid;
+                      String displayEmail =
+                          context.read<ChatBloc>().currentUser?.email ??
+                          'Unknown';
+                      Color getUserColor(String uid) {
+                        final hash = uid.hashCode;
+                        return Color((hash & 0xFFFFFF) | 0xFF20c0d00);
+                      }
 
                       final isMe = msg['senderId'] == currentUserId;
                       return ChatBubble(
                         isMe: isMe,
                         message: msg['text'] ?? '',
-                        username: isMe ? 'You' : (msg['senderId'] ?? 'Unknown'),
-                        userColor: isMe ? Colors.blue : Colors.orange,
+                        username: isMe
+                            ? 'You'
+                            : (displayEmail.split('@').first),
+                        userColor: isMe
+                            ? Colors.blue
+                            : getUserColor(msg['senderId']),
                       );
                     },
                   );
