@@ -89,5 +89,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'planmate-depi.firebasestorage.app',
     measurementId: 'G-SET8L69V6W',
   );
-
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planmate_app/core/utils/constants.dart';
-//<<<<<<< Updated upstream
 import 'package:planmate_app/features/authentication/services/auth_gate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//=======
-//>>>>>>> Stashed changes
+import '../../../../ai_chat/presentation/views/ai_chat_view.dart';
 
 class GetStartedButton extends StatelessWidget {
   const GetStartedButton({

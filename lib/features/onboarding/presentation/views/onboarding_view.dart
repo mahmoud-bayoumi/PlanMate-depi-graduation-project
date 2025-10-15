@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/onboarding/presentation/views/widgets/get_started_widgets.dart';
+import 'widgets/get_started_widgets.dart';
 import 'widgets/cycles_container.dart';
 import 'widgets/first_page_bottom_sheet.dart';
 import 'widgets/onboarding_description.dart';
@@ -43,7 +43,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       ),
       bottomSheet: isLastPage
           // Last Page → Big Button
-          ? GetStartedButton()
+          ? const GetStartedButton()
           // First Page → Indicator + Next Button
           : FIrstPageBottomSheet(
               isLastPage: isLastPage,
@@ -58,26 +58,26 @@ class _OnboardingViewState extends State<OnboardingView> {
     required String description,
   }) {
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CyclesContainer(
             image: imagePath,
           ),
-          SizedBox(
+          const SizedBox(
             height: 41,
           ),
           OnboardingTitleText(
             title: title,
           ),
-          SizedBox(
+          const SizedBox(
             height: 21,
           ),
           OnboardingDescription(
             description: description,
           ),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
         ],

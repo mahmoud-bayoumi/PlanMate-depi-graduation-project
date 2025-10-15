@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/onboarding/presentation/views/widgets/dots_row.dart';
-import 'package:planmate_app/features/onboarding/presentation/views/widgets/next_text_button.dart';
+import 'dots_row.dart';
+import 'next_text_button.dart';
 
 class FIrstPageBottomSheet extends StatelessWidget {
   const FIrstPageBottomSheet({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/ai_chat/presentation/views/widgets/typing_indicator.dart';
+import 'typing_indicator.dart';
 
 import 'message_bubble.dart';
 

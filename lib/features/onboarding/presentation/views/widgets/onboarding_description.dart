@@ -13,7 +13,7 @@ class OnboardingDescription extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Text(
         description,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 16,
         ),

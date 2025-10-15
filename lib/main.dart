@@ -8,13 +8,11 @@ import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
 import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
 import 'package:planmate_app/firebase_options.dart';
 import 'package:planmate_app/features/authentication/services/auth_service.dart';
-// Optional additional imports (uncomment if needed):
-// import 'package:planmate_app/event_details.dart';
-// import 'package:planmate_app/your_event_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load environment variables and initialize Firebase
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

@@ -4,11 +4,7 @@ class MessageBubble extends StatelessWidget {
   final String text;
   final bool isUser;
 
-  const MessageBubble({
-    super.key,
-    required this.text,
-    required this.isUser,
-  });
+  const MessageBubble({super.key, required this.text, required this.isUser});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +16,12 @@ class MessageBubble extends StatelessWidget {
         decoration: BoxDecoration(
           color: isUser ? Colors.blue : Colors.grey.shade200,
           borderRadius: isUser
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   bottomRight: Radius.circular(12),
                   topLeft: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                 )
-              : BorderRadius.only(
+              : const BorderRadius.only(
                   bottomRight: Radius.circular(12),
                   topRight: Radius.circular(12),
                   bottomLeft: Radius.circular(12),

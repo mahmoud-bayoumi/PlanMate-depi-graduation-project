@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
+import '../../../../../core/utils/constants.dart';
 
 class NextTextButton extends StatelessWidget {
   const NextTextButton({
@@ -18,8 +18,8 @@ class NextTextButton extends StatelessWidget {
           curve: Curves.easeInOut,
         );
       },
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           Text(
             "Next",
             style: TextStyle(
