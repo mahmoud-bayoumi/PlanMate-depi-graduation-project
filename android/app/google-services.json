@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "254371130671",
+    "project_id": "planmate-depi",
+    "storage_bucket": "planmate-depi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254371130671:android:5fad89f5672b6c972d85da",
+        "android_client_info": {
+          "package_name": "com.example.planmate_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254371130671-k5cuota0k3pbk1057cucjhen8aa0qrq2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.planmate_app",
+            "certificate_hash": "5e2c5020f297b95a7aa0be1100a318f91d1f1639"
+          }
+        },
+        {
+          "client_id": "254371130671-foilt1a9ivoa5hqtphl5nrcdm2t0ecb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzGTeeWoAZcAtIp1pusojdqlHNma9TJkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254371130671-6lmsfelnmkn5pg530nr45ob3m6th15nc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "254371130671-l7ihsblq9vk5hg31qm7rlp9gom2oeplj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.planmateApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

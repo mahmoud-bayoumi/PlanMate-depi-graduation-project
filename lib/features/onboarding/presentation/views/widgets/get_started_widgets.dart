@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/utils/constants.dart';
+import 'package:planmate_app/core/utils/constants.dart';
+import 'package:planmate_app/features/authentication/services/auth_gate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../ai_chat/presentation/views/ai_chat_view.dart';
 
 class GetStartedButton extends StatelessWidget {
@@ -22,11 +24,16 @@ class GetStartedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const PlanMateAIChatView()),
-          );
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('hasSeenOnboarding', true);
+
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const AuthGate()),
+            );
+          }
         },
         child: const Text(
           'Get Started',
