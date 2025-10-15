@@ -18,13 +18,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<LoadMessages>(_onLoadMessages);
     on<SendMessage>(_onSendMessage);
     on<MessagesUpdated>(_onMessagesUpdated);
-    add(LoadMessages());
+    on<MessagesUpdatedError>(_onMessagesUpdatedError);
   }
-
 
   void _onLoadMessages(LoadMessages event, Emitter<ChatState> emit) {
     emit(ChatLoading());
-
 
     _messagesSubscription?.cancel();
 
@@ -33,22 +31,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         .where('chatId', isEqualTo: GENERAL_CHAT_ID)
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .listen((snapshot) {
-          final messages = snapshot.docs.map((doc) => doc.data()).toList();
-          add(MessagesUpdated(messages));
-        })
-        .onError((error) {
-          emit(ChatError('Failed to load messages: $error'));
-        });
+        .listen(
+          (snapshot) {
+            final messages = snapshot.docs.map((doc) => doc.data()).toList();
+            add(MessagesUpdated(messages));
+          },
+          onError: (error) {
+            add(MessagesUpdatedError('Failed to load messages: $error'));
+          },
+        );
   }
 
   void _onMessagesUpdated(MessagesUpdated event, Emitter<ChatState> emit) {
     emit(ChatLoaded(event.messages));
   }
 
-  Future<void> _onSendMessage(SendMessage event, Emitter<ChatState> emit) async {
+  void _onMessagesUpdatedError(
+    MessagesUpdatedError event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(ChatError(event.errorMessage));
+  }
+
+  Future<void> _onSendMessage(
+    SendMessage event,
+    Emitter<ChatState> emit,
+  ) async {
     if (_auth.currentUser == null) {
-      emit(ChatError("User not logged in."));
+      emit(const ChatError("User not logged in."));
       return;
     }
 
@@ -61,9 +71,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         'text': event.content,
         'timestamp': FieldValue.serverTimestamp(),
       });
-
-   
-
     } catch (e) {
       emit(ChatError("Failed to send message: $e"));
     }
