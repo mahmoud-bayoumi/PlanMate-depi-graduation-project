@@ -1,7 +1,6 @@
 import 'task.dart';
 
-class Event {
-  final String id;
+class EventModel {
   final String title;
   final String image;
   final String date;
@@ -10,8 +9,7 @@ class Event {
   final String phone;
   final List<Task> tasks;
 
-  Event({
-    required this.id,
+  EventModel({
     required this.title,
     required this.image,
     required this.date,
@@ -21,15 +19,15 @@ class Event {
     required this.tasks,
   });
 
-  factory Event.fromMap(String id, Map<String, dynamic> map, List<Task> tasks) {
-    return Event(
-      id: id,
-      title: map['title'],
-      image: map['image'],
-      date: map['date'],
-      time: map['time'],
-      address: map['address'],
-      phone: map['phone'],
+  // منMap آمن: يحوّل القيم ويعطي قيم افتراضية لو null
+  factory EventModel.fromMap(Map<String, dynamic> map, List<Task> tasks) {
+    return EventModel(
+      title: (map['title'] as String?)?.toString() ?? '',
+      image: (map['image'] as String?).toString(),
+      date: (map['date'] as String?)?.toString() ?? '',
+      time: (map['time'] as String?)?.toString() ?? '',
+      address: (map['address'] as String?)?.toString() ?? '',
+      phone: (map['phone'] as String?)?.toString() ?? '',
       tasks: tasks,
     );
   }

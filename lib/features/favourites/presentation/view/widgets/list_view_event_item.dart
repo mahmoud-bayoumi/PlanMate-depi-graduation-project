@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../home/presentation/view/widgets/event_item.dart';
+//import '../../../../home/presentation/view/widgets/event_item.dart';
 
 class ListViewEventItem extends StatelessWidget {
   const ListViewEventItem({super.key});
@@ -12,7 +12,7 @@ class ListViewEventItem extends StatelessWidget {
       itemBuilder: (context, index) {
         return const Padding(
           padding: EdgeInsets.only(left: 15, right: 10, bottom: 20),
-          child: EventItem(isFav: true),
+          child: Text(''),
         );
       },
     );

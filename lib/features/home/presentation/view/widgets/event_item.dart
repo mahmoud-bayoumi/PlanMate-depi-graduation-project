@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../event_details.dart';
+import '../../../data/models/event.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({super.key, required this.isFav});
+  const EventItem({super.key, required this.isFav, required this.eventModel});
   final bool isFav;
+  final EventModel eventModel;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,8 +43,8 @@ class EventItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Image.asset(
-                    'assets/images/event.jpg',
+                  child: Image.network(
+                    eventModel.image,
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -52,11 +54,11 @@ class EventItem extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "Laugh with Khalil Comedy / 20.12.2024",
-                style: TextStyle(
+                "${eventModel.title} / ${eventModel.date}",
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -64,21 +66,21 @@ class EventItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      "10:30 PM, Ali Baba Cafe, New Cairo",
-                      style: TextStyle(
+                      "${eventModel.time}, ${eventModel.address}",
+                      style: const TextStyle(
                         color: Color(0xff8D8D8D),
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Free",
                     style: TextStyle(
                       color: Color(0xff6564DB),

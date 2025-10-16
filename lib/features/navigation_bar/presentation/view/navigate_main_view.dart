@@ -15,7 +15,7 @@ class NavigateMainView extends StatefulWidget {
 
 class _NavigateMainViewState extends State<NavigateMainView> {
   int currentIndex = 0;
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

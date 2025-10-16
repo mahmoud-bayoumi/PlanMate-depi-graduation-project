@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/models/category.dart';
+
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.isSelected});
+  const CategoryItem({
+    super.key,
+    required this.isSelected,
+    required this.category,
+  });
   final bool isSelected;
+  final CategoryModel category;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,11 +35,16 @@ class CategoryItem extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: Image.asset('assets/images/Category.jpg', fit: BoxFit.cover),
+            child: Image.network(
+              category.image,
+              fit: BoxFit.fill,
+              width: 150,
+              height: 65,
+            ),
           ),
           const SizedBox(height: 5),
           Text(
-            "Comedy",
+            category.name,
             style: TextStyle(
               color: isSelected ? Colors.white : Colors.black,
               fontWeight: FontWeight.w600,

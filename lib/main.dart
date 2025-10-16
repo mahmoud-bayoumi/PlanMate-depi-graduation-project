@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/authentication/bloc/auth_bloc.dart';
 import 'features/authentication/bloc/auth_event.dart';
+import 'features/home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'firebase_options.dart';
 import 'features/authentication/services/auth_service.dart';
@@ -24,8 +25,19 @@ class PlanMateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(AuthService())..add(AuthStarted()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            return AuthBloc(AuthService())..add(AuthStarted());
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return GetCategoryCubit()..getCategories();
+          },
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'PlanMate',

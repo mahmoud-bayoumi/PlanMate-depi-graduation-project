@@ -1,23 +1,23 @@
 import 'event.dart';
 
-class Category {
-  final String id;
+class CategoryModel {
   final String name;
   final String image;
-  final List<Event> events;
+  final List<EventModel> events;
 
-  Category({
-    required this.id,
+  CategoryModel({
     required this.name,
     required this.image,
     required this.events,
   });
 
-  factory Category.fromMap(String id, Map<String, dynamic> map, List<Event> events) {
-    return Category(
-      id: id,
-      name: map['name'],
-      image: map['image'],
+  factory CategoryModel.fromMap(
+    Map<String, dynamic> map,
+    List<EventModel> events,
+  ) {
+    return CategoryModel(
+      name: (map['name'] as String?)?.toString() ?? '',
+      image: (map['image'] as String?)?.toString() ?? '',
       events: events,
     );
   }
