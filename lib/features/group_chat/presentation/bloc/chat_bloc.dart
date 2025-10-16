@@ -2,11 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
-
 import 'chat_event.dart';
 import 'chat_state.dart';
 
-const String GENERAL_CHAT_ID = 'general_chat';
+const String genralChatId = 'general_chat';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -29,7 +28,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     _messagesSubscription = _firestore
         .collection('messages')
-        .where('chatId', isEqualTo: GENERAL_CHAT_ID)
+        .where('chatId', isEqualTo: genralChatId)
         .orderBy('timestamp', descending: true)
         .snapshots()
         .listen(
@@ -67,7 +66,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final currentUserId = _auth.currentUser!.uid;
 
       await _firestore.collection('messages').add({
-        'chatId': GENERAL_CHAT_ID,
+        'chatId': genralChatId,
         'senderId': currentUserId,
         'text': event.content,
         'timestamp': FieldValue.serverTimestamp(),

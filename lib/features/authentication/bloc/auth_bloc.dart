@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
-import 'package:planmate_app/features/authentication/services/auth_service.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
+import '../services/auth_service.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;

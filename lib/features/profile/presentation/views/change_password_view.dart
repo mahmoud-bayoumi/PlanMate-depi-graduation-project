@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/custom_input_field.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/password_field.dart';
+import 'widgets/custom_input_field.dart';
+import 'widgets/password_field.dart';
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});
@@ -31,7 +31,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
             fontFamily: 'PlusJakartaSans',
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            color:  Color(0xFF181D27),
+            color: Color(0xFF181D27),
           ),
         ),
         centerTitle: true,
@@ -42,7 +42,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           child: Column(
             children: [
               const SizedBox(height: 100),
-              
+
               PasswordField(
                 label: 'Current Password',
                 placeholder: '••••••••••••••••',
@@ -53,9 +53,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 10),
-              
+
               PasswordField(
                 label: 'New Password',
                 placeholder: '••••••••••••••••',
@@ -66,9 +66,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 10),
-              
+
               PasswordField(
                 label: 'Confirm New Password',
                 placeholder: '••••••••••••••••',
@@ -79,15 +79,15 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                   });
                 },
               ),
-              
+
               const SizedBox(height: 240),
-              
+
               PrimaryButton(
                 text: 'Change Password',
                 onPressed: () {},
                 backgroundColor: const Color(0xFF1D61E7),
               ),
-              
+
               const SizedBox(height: 40),
             ],
           ),

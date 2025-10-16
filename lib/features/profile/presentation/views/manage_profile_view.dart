@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/custom_input_field.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/primary_button.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/profile_avatar.dart';
+import 'widgets/custom_input_field.dart';
+import 'widgets/primary_button.dart';
+import 'widgets/profile_avatar.dart';
 
 class ManageProfileView extends StatelessWidget {
   const ManageProfileView({super.key});
@@ -34,11 +34,11 @@ class ManageProfileView extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              
+
               const ProfileAvatar(),
-              
+
               const SizedBox(height: 16),
-              
+
               const Text(
                 'User Name',
                 style: TextStyle(
@@ -49,9 +49,9 @@ class ManageProfileView extends StatelessWidget {
                   letterSpacing: 0.5,
                 ),
               ),
-              
+
               const SizedBox(height: 4),
-              
+
               const Text(
                 'username@gmail.com',
                 style: TextStyle(
@@ -61,35 +61,32 @@ class ManageProfileView extends StatelessWidget {
                   color: Color(0xFFABABAB),
                 ),
               ),
-              
+
               const SizedBox(height: 5),
-              
+
               const CustomInputField(
                 label: 'First Name',
                 placeholder: 'Mahmoud...',
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               const CustomInputField(
                 label: 'Last Name',
                 placeholder: 'Mohamed...',
               ),
-              
+
               const SizedBox(height: 15),
-              
+
               const CustomInputField(
                 label: 'Birth Date',
                 placeholder: '22-02-2000...',
               ),
-              
+
               const SizedBox(height: 140),
-              
-              PrimaryButton(
-                text: 'Update Profile',
-                onPressed: () {},
-              ),
-              
+
+              PrimaryButton(text: 'Update Profile', onPressed: () {}),
+
               const SizedBox(height: 40),
             ],
           ),

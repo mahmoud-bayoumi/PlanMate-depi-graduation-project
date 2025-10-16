@@ -36,10 +36,7 @@ class PasswordField extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
-            border: Border.all(
-              color: const Color(0xFFE2E2E2),
-              width: 1,
-            ),
+            border: Border.all(color: const Color(0xFFE2E2E2), width: 1),
           ),
           child: TextField(
             controller: controller,
@@ -51,7 +48,7 @@ class PasswordField extends StatelessWidget {
             ),
             decoration: InputDecoration(
               hintText: placeholder,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 16,
                 color: Color(0x801A1C1E),
@@ -63,8 +60,10 @@ class PasswordField extends StatelessWidget {
               border: InputBorder.none,
               suffixIcon: IconButton(
                 icon: Icon(
-                  isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  color: Color(0x801A1C1E),
+                  isVisible
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  color: const Color(0x801A1C1E),
                   size: 22,
                 ),
                 onPressed: onToggleVisibility,

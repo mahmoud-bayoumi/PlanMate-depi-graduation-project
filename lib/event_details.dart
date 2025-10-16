@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/your_event_list_screen.dart';
+import 'your_event_list_screen.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   const EventDetailsScreen({super.key});
@@ -30,20 +30,20 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
+            const Padding(
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Electronic Steve - Music Festival",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "Free",
                         style: TextStyle(
@@ -54,19 +54,19 @@ class EventDetailsScreen extends StatelessWidget {
                       Icon(Icons.share, color: Colors.grey),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
 
-                  const Text("Date: 10th February"),
-                  const Text("Address: NICEL Ground, Bengaluru"),
-                  const Text("Time: 6:30 pm onwards."),
-                  const Text("Phone: 074063 88686"),
+                  Text("Date: 10th February"),
+                  Text("Address: NICEL Ground, Bengaluru"),
+                  Text("Time: 6:30 pm onwards."),
+                  Text("Phone: 074063 88686"),
 
-                  const SizedBox(height: 20),
-                  const Text(
+                  SizedBox(height: 20),
+                  Text(
                     "Note :-",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const Text(
+                  Text(
                     "You can access each event's tasks from the Events List screen.",
                   ),
                 ],

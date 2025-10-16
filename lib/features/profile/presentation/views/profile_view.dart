@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
-import 'package:planmate_app/features/authentication/presentation/view/login_screen.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/profile_avatar.dart';
-import 'package:planmate_app/features/profile/presentation/views/widgets/profile_menu_item.dart';
+import '../../../authentication/bloc/auth_bloc.dart';
+import '../../../authentication/bloc/auth_event.dart';
+import '../../../authentication/presentation/view/login_screen.dart';
+import 'widgets/profile_avatar.dart';
+import 'widgets/profile_menu_item.dart';
 import 'manage_profile_view.dart';
 import 'change_password_view.dart';
 import 'terms_conditions_view.dart';
@@ -21,15 +21,15 @@ class ProfileView extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 45.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 45.0),
                 child: Text(
                   'Profile',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xFF2D394E),
+                    color: Color(0xFF2D394E),
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -41,13 +41,13 @@ class ProfileView extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              Text(
+              const Text(
                 'User Name',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF2D394E),
+                  color: Color(0xFF2D394E),
                   letterSpacing: 0.5,
                 ),
               ),

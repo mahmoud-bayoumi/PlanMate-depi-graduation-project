@@ -64,21 +64,21 @@ class EventsListScreen extends StatelessWidget {
         ],
       ),
       children: tasks
-          .map((task) => ListTile(
-                title: Text(task["title"] ?? ""),
-                subtitle: Text("Task Description"),
-                trailing: Text(
-                  task["status"] == "Completed"
-                      ? "Completed"
-                      : "Join Now",
-                  style: TextStyle(
-                    color: task["status"] == "Completed"
-                        ? Colors.green
-                        : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
+          .map(
+            (task) => ListTile(
+              title: Text(task["title"] ?? ""),
+              subtitle: const Text("Task Description"),
+              trailing: Text(
+                task["status"] == "Completed" ? "Completed" : "Join Now",
+                style: TextStyle(
+                  color: task["status"] == "Completed"
+                      ? Colors.green
+                      : Colors.red,
+                  fontWeight: FontWeight.bold,
                 ),
-              ))
+              ),
+            ),
+          )
           .toList(),
     );
   }

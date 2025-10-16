@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({
-    super.key,
-    required this.isSelected,
-  });
+  const CategoryItem({super.key, required this.isSelected});
   final bool isSelected;
   @override
   Widget build(BuildContext context) {
@@ -12,7 +9,7 @@ class CategoryItem extends StatelessWidget {
       width: 85,
       height: 90,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? Colors.blue : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -20,25 +17,20 @@ class CategoryItem extends StatelessWidget {
                 ? Colors.blue
                 : Colors.black.withValues(alpha: 0.1),
             blurRadius: isSelected ? 0 : 6,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadiusGeometry.only(
+            borderRadius: const BorderRadiusGeometry.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: Image.asset(
-              'assets/images/Category.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/Category.jpg', fit: BoxFit.cover),
           ),
-          SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Text(
             "Comedy",
             style: TextStyle(

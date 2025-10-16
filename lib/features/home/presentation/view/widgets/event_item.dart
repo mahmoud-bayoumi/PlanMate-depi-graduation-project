@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
-import 'package:planmate_app/event_details.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../event_details.dart';
 
 class EventItem extends StatelessWidget {
   const EventItem({super.key, required this.isFav});
@@ -12,7 +12,7 @@ class EventItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return EventDetailsScreen();
+              return const EventDetailsScreen();
             },
           ),
         );
@@ -97,10 +97,7 @@ class EventItem extends StatelessWidget {
 }
 
 class FavouriteIcon extends StatelessWidget {
-  const FavouriteIcon({
-    super.key,
-    required this.isFav,
-  });
+  const FavouriteIcon({super.key, required this.isFav});
 
   final bool isFav;
 
@@ -117,7 +114,7 @@ class FavouriteIcon extends StatelessWidget {
         child: IconButton(
           icon: Icon(
             isFav ? Icons.star : Icons.star_border_purple500_sharp,
-            color: Color(kPrimaryColor),
+            color: const Color(kPrimaryColor),
             size: 30,
           ),
           onPressed: () {},

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
-import 'package:planmate_app/features/splash/presentation/views/splash_view.dart';
-import 'package:planmate_app/firebase_options.dart';
-import 'package:planmate_app/features/authentication/services/auth_service.dart';
+import 'features/authentication/bloc/auth_bloc.dart';
+import 'features/authentication/bloc/auth_event.dart';
+import 'features/splash/presentation/views/splash_view.dart';
+import 'firebase_options.dart';
+import 'features/authentication/services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
