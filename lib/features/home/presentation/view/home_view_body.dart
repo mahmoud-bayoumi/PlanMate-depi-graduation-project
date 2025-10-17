@@ -49,7 +49,7 @@ class HomeViewBody extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TitleText(
                     text:
-                        '${BlocProvider.of<GetCategoryCubit>(context).categoryList[0].name} Events',
+                        '${BlocProvider.of<GetCategoryCubit>(context).nameCategory} Events',
                   ),
                 ),
               ),

@@ -22,9 +22,23 @@ class ListViewCategoryItem extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: 15),
-            child: CategoryItem(
-              isSelected: index == 1,
-              category: categorys[index],
+            child: GestureDetector(
+              onTap: () {
+                BlocProvider.of<GetCategoryCubit>(
+                  context,
+                ).selectedCategoryIndex = index;
+                BlocProvider.of<GetCategoryCubit>(
+                  context,
+                ).getEventsByCategory(categorys[index].name);
+                BlocProvider.of<GetCategoryCubit>(context).nameCategory =
+                    categorys[index].name;
+              },
+              child: CategoryItem(
+                isSelected:
+                    BlocProvider.of<GetCategoryCubit>(context).nameCategory ==
+                    categorys[index].name,
+                category: categorys[index],
+              ),
             ),
           );
         },

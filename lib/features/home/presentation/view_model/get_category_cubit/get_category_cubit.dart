@@ -7,9 +7,11 @@ import 'get_category_state.dart';
 
 class GetCategoryCubit extends Cubit<GetCategoryState> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  int selectedCategoryIndex = 1000;
   List<CategoryModel> categoryList = [];
   List<Task> taskList = [];
   List<EventModel> eventList = [];
+  String nameCategory = 'General';
   GetCategoryCubit() : super(GetCategoryInitial());
 
   Future<void> getCategories() async {
@@ -95,6 +97,93 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
       print('Error: $e');
       print(st);
       emit(GetCategoryFailure(error: e.toString()));
+    }
+  }
+
+  /// جلب events (ومهامهم) حسب قيمة الحقل 'name' في مستندات category
+  Future<List<EventModel>> getEventsByCategory(String categoryName) async {
+    emit(GetCategoryLoading());
+
+    try {
+      final List<EventModel> localEventList = [];
+
+      // نبحث عن الكاتيجوري حسب الحقل 'name'
+      final q = await firestore
+          .collection('category')
+          .where('name', isEqualTo: categoryName)
+          .get();
+
+      if (q.docs.isEmpty) {
+        final msg = 'Category with name "$categoryName" not found';
+        print(msg);
+        emit(GetCategoryFailure(error: msg));
+        return [];
+      }
+
+      // لكل مستند category اللي رجعناه
+      for (final catDoc in q.docs) {
+        final categoryDocId = catDoc.id;
+
+        final eventSnapshot = await firestore
+            .collection('category')
+            .doc(categoryDocId)
+            .collection('event')
+            .get();
+
+        for (var eventDoc in eventSnapshot.docs) {
+          final eventData = eventDoc.data() as Map<String, dynamic>? ?? {};
+
+          // قائمة مهام جديدة لكل حدث
+          final List<Task> localTaskList = [];
+
+          final taskSnapshot = await firestore
+              .collection('category')
+              .doc(categoryDocId)
+              .collection('event')
+              .doc(eventDoc.id)
+              .collection('task')
+              .get();
+
+          for (var taskDoc in taskSnapshot.docs) {
+            final taskData = taskDoc.data() as Map<String, dynamic>? ?? {};
+            try {
+              // نفترض Task.fromMap موجود ويأخذ Map<String,dynamic>
+              final task = Task.fromMap(taskData);
+              localTaskList.add(task);
+            } catch (err) {
+              print('Failed to parse task ${taskDoc.id}: $err');
+              continue;
+            }
+          } // end tasks loop
+
+          try {
+            // EventModel.fromMap يأخذ (Map, List<Task>)
+            final event = EventModel.fromMap(eventData, localTaskList);
+            localEventList.add(event);
+          } catch (err) {
+            print('Failed to parse event ${eventDoc.id}: $err');
+            continue;
+          }
+        } // end events loop
+      } // end categories loop
+
+      // خزن محليًا في حال احتجت تستخدمه من خارج
+      eventList = localEventList;
+
+      print(
+        'Loaded ${localEventList.length} events for categoryName="$categoryName"',
+      );
+      emit(GetCategorySuccess());
+      return localEventList;
+    } on FirebaseException catch (fe) {
+      print('FirebaseException: ${fe.code} ${fe.message}');
+      emit(GetCategoryFailure(error: '${fe.code}: ${fe.message}'));
+      return [];
+    } catch (e, st) {
+      print('Error: $e');
+      print(st);
+      emit(GetCategoryFailure(error: e.toString()));
+      return [];
     }
   }
 }
