@@ -20,7 +20,7 @@ class SliverListEventItem extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(left: 20, right: 10, bottom: 10),
           child: EventItem(
-            isFav: index == 0 ? true : false,
+            isFav: index == 1000 ? true : false,
             eventModel: events[index],
           ),
         );

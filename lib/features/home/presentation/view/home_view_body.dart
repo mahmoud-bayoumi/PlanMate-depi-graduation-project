@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/widgets/shimmer_loading.dart';
 import '../view_model/get_category_cubit/get_category_cubit.dart';
 import '../view_model/get_category_cubit/get_category_state.dart';
 import 'widgets/chat_image_icon.dart';
@@ -16,7 +17,7 @@ class HomeViewBody extends StatelessWidget {
     return BlocBuilder<GetCategoryCubit, GetCategoryState>(
       builder: (context, state) {
         if (state is GetCategoryLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const ShimmerLoading();
         } else if (state is GetCategoryFailure) {
           return Center(child: Text(state.error));
         } else if (state is GetEventsByCategorySuccess) {
