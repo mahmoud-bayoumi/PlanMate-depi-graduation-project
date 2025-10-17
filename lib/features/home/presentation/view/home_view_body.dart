@@ -19,6 +19,44 @@ class HomeViewBody extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (state is GetCategoryFailure) {
           return Center(child: Text(state.error));
+        } else if (state is GetEventsByCategorySuccess) {
+          return const CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10),
+                  child: Row(
+                    children: [
+                      Expanded(child: SearchTextField()),
+                      ChatImageIcon(),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: TitleText(text: 'Category'),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 15)),
+              SliverToBoxAdapter(child: ListViewCategoryItem()),
+              SliverToBoxAdapter(child: SizedBox(height: 80)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Center(
+                    child: Text(
+                      'Category with this name not found, Try Again!!',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
         } else {
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -35,10 +73,23 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 20)),
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TitleText(text: 'Category'),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      const TitleText(text: 'Category'),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<GetCategoryCubit>(
+                            context,
+                          ).getCategories();
+                        },
+                        icon: const Icon(Icons.refresh_rounded),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 15)),

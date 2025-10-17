@@ -12,6 +12,7 @@ class SearchTextField extends StatelessWidget {
       onSubmitted: (value) {
         BlocProvider.of<GetCategoryCubit>(context).getEventsByCategory(value);
         BlocProvider.of<GetCategoryCubit>(context).selectedCategoryIndex = 1000;
+        BlocProvider.of<GetCategoryCubit>(context).nameCategory = value;
       },
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../data/models/category.dart';
 
@@ -34,8 +35,8 @@ class CategoryItem extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: Image.network(
-              category.image,
+            child: CachedNetworkImage(
+              imageUrl: category.image,
               fit: BoxFit.fill,
               width: 150,
               height: 65,

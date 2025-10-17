@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../event_details.dart';
@@ -43,8 +44,8 @@ class EventItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Image.network(
-                    eventModel.image,
+                  child: CachedNetworkImage(
+                    imageUrl: eventModel.image,
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,

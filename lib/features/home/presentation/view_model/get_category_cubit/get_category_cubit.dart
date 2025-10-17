@@ -16,7 +16,10 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
 
   Future<void> getCategories() async {
     emit(GetCategoryLoading());
-
+    nameCategory = 'General';
+    categoryList.clear();
+    eventList.clear();
+    taskList.clear();
     try {
       final categorySnapshot = await firestore.collection('category').get();
 
@@ -103,7 +106,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
   /// جلب events (ومهامهم) حسب قيمة الحقل 'name' في مستندات category
   Future<List<EventModel>> getEventsByCategory(String categoryName) async {
     emit(GetCategoryLoading());
-
+    nameCategory = categoryName;
     try {
       final List<EventModel> localEventList = [];
 
@@ -114,9 +117,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
           .get();
 
       if (q.docs.isEmpty) {
-        final msg = 'Category with name "$categoryName" not found';
-        print(msg);
-        emit(GetCategoryFailure(error: msg));
+        emit(GetEventsByCategorySuccess([]));
         return [];
       }
 

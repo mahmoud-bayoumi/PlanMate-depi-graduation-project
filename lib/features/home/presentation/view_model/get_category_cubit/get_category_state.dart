@@ -1,3 +1,5 @@
+import '../../../data/models/event.dart';
+
 sealed class GetCategoryState {}
 
 final class GetCategoryInitial extends GetCategoryState {}
@@ -10,4 +12,9 @@ final class GetCategoryFailure extends GetCategoryState {
   final String error;
 
   GetCategoryFailure({required this.error});
+}
+
+class GetEventsByCategorySuccess extends GetCategoryState {
+  final List<EventModel> events;
+  GetEventsByCategorySuccess(this.events);
 }
