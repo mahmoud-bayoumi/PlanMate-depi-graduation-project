@@ -15,7 +15,7 @@ class EventItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return const EventDetailsScreen();
+              return EventDetailsScreen(eventModel: eventModel);
             },
           ),
         );

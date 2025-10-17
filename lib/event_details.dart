@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'features/home/data/models/event.dart';
 import 'your_event_list_screen.dart';
 
 class EventDetailsScreen extends StatelessWidget {
-  const EventDetailsScreen({super.key});
-
+  const EventDetailsScreen({super.key, required this.eventModel});
+  final EventModel eventModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +16,8 @@ class EventDetailsScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.network(
-                  'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/singing-party-poster-design-template-a086c1c483534dbe63c2e2691830763e_screen.jpg?ts=1706247025', // replace with your own image link
+                CachedNetworkImage(
+                  imageUrl: eventModel.image,
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -25,49 +27,67 @@ class EventDetailsScreen extends StatelessWidget {
                   left: 16,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.all(16),
+            Padding(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Electronic Steve - Music Festival",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    eventModel.title,
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "Free",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Icon(Icons.share, color: Colors.grey),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                  Text("Date: 10th February"),
-                  Text("Address: NICEL Ground, Bengaluru"),
-                  Text("Time: 6:30 pm onwards."),
-                  Text("Phone: 074063 88686"),
-
-                  SizedBox(height: 20),
                   Text(
-                    "Note :-",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    "Date: ${eventModel.date}",
+                    style: const TextStyle(fontSize: 20),
                   ),
                   Text(
+                    "Address: ${eventModel.address}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Time: ${eventModel.time}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Phone: ${eventModel.phone}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Note :-",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  const Text(
                     "You can access each event's tasks from the Events List screen.",
+                    style: TextStyle(fontSize: 20),
                   ),
                 ],
               ),
