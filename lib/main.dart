@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/authentication/bloc/auth_bloc.dart';
 import 'features/authentication/bloc/auth_event.dart';
+import 'features/home/presentation/view_model/favourite_cubit/favourite_cubit.dart';
 import 'features/home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'firebase_options.dart';
@@ -35,6 +36,11 @@ class PlanMateApp extends StatelessWidget {
         BlocProvider(
           create: (context) {
             return GetCategoryCubit()..getCategories();
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return FavoriteCubit()..fetchFavorites();
           },
         ),
       ],

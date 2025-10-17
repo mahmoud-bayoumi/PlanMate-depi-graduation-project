@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/category.dart';
@@ -57,17 +59,17 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
               final task = Task.fromMap(taskData);
               taskList.add(task);
             } catch (err) {
-              print('Failed to parse task ${taskDoc.id}: $err');
+              //print('Failed to parse task ${taskDoc.id}: $err');
               continue; // نكمل الباقي
             }
           } // end tasks loop
 
           try {
             final event = EventModel.fromMap(eventData, taskList);
-            print('--- event ${eventDoc.id} raw data: $eventData');
+            //print('--- event ${eventDoc.id} raw data: $eventData');
             eventList.add(event);
           } catch (err) {
-            print('Failed to parse event ${eventDoc.id}: $err');
+            //print('Failed to parse event ${eventDoc.id}: $err');
             continue;
           }
         } // end events loop
@@ -76,12 +78,12 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
           final category = CategoryModel.fromMap(categoryData, eventList);
           categoryList.add(category);
         } catch (err) {
-          print('Failed to parse category ${categoryDoc.id}: $err');
+          //print('Failed to parse category ${categoryDoc.id}: $err');
           continue;
         }
       } // end categories loop
 
-      print('categories: ${categoryList.length}');
+      //print('categories: ${categoryList.length}');
       final totalEvents = categoryList.fold<int>(
         0,
         (p, c) => p + c.events.length,
@@ -90,15 +92,15 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
         0,
         (p, c) => p + c.events.fold<int>(0, (pp, e) => pp + e.tasks.length),
       );
-      print('events: $totalEvents, tasks: $totalTasks');
+      //print('events: $totalEvents, tasks: $totalTasks');
 
       emit(GetCategorySuccess(/*categories: categoryList*/));
     } on FirebaseException catch (fe) {
-      print('FirebaseException: ${fe.code} ${fe.message}');
+      //print('FirebaseException: ${fe.code} ${fe.message}');
       emit(GetCategoryFailure(error: '${fe.code}: ${fe.message}'));
-    } catch (e, st) {
-      print('Error: $e');
-      print(st);
+    } catch (e) {
+      //print('Error: $e');
+      //print(st);
       emit(GetCategoryFailure(error: e.toString()));
     }
   }
@@ -152,7 +154,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
               final task = Task.fromMap(taskData);
               localTaskList.add(task);
             } catch (err) {
-              print('Failed to parse task ${taskDoc.id}: $err');
+              //print('Failed to parse task ${taskDoc.id}: $err');
               continue;
             }
           } // end tasks loop
@@ -162,7 +164,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
             final event = EventModel.fromMap(eventData, localTaskList);
             localEventList.add(event);
           } catch (err) {
-            print('Failed to parse event ${eventDoc.id}: $err');
+            //print('Failed to parse event ${eventDoc.id}: $err');
             continue;
           }
         } // end events loop
@@ -171,18 +173,18 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
       // خزن محليًا في حال احتجت تستخدمه من خارج
       eventList = localEventList;
 
-      print(
-        'Loaded ${localEventList.length} events for categoryName="$categoryName"',
-      );
+      // print(
+      // 'Loaded ${localEventList.length} events for categoryName="$categoryName"',
+      //);
       emit(GetCategorySuccess());
       return localEventList;
     } on FirebaseException catch (fe) {
-      print('FirebaseException: ${fe.code} ${fe.message}');
+      // print('FirebaseException: ${fe.code} ${fe.message}');
       emit(GetCategoryFailure(error: '${fe.code}: ${fe.message}'));
       return [];
-    } catch (e, st) {
-      print('Error: $e');
-      print(st);
+    } catch (e) {
+      //print('Error: $e');
+      //print(st);
       emit(GetCategoryFailure(error: e.toString()));
       return [];
     }

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/utils/constants.dart';
 import '../../../../../event_details.dart';
 import '../../../data/models/event.dart';
+import 'favourite_icon.dart';
 
 class EventItem extends StatelessWidget {
   const EventItem({super.key, required this.isFav, required this.eventModel});
@@ -51,7 +51,7 @@ class EventItem extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                FavouriteIcon(isFav: isFav),
+                FavouriteIcon(eventModel: eventModel),
               ],
             ),
             const SizedBox(height: 8),
@@ -93,34 +93,6 @@ class EventItem extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class FavouriteIcon extends StatelessWidget {
-  const FavouriteIcon({super.key, required this.isFav});
-
-  final bool isFav;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 10,
-      right: 10,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.8),
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          icon: Icon(
-            isFav ? Icons.star : Icons.star_border_purple500_sharp,
-            color: const Color(kPrimaryColor),
-            size: 30,
-          ),
-          onPressed: () {},
         ),
       ),
     );

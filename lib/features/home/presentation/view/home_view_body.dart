@@ -21,10 +21,10 @@ class HomeViewBody extends StatelessWidget {
         } else if (state is GetCategoryFailure) {
           return Center(child: Text(state.error));
         } else if (state is GetEventsByCategorySuccess) {
-          return const CustomScrollView(
-            physics: BouncingScrollPhysics(),
+          return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.only(left: 20, right: 10),
                   child: Row(
@@ -35,17 +35,30 @@ class HomeViewBody extends StatelessWidget {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 20)),
+              const SliverToBoxAdapter(child: SizedBox(height: 20)),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TitleText(text: 'Category'),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      const TitleText(text: 'Category'),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<GetCategoryCubit>(
+                            context,
+                          ).getCategories();
+                        },
+                        icon: const Icon(Icons.refresh_rounded),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 15)),
-              SliverToBoxAdapter(child: ListViewCategoryItem()),
-              SliverToBoxAdapter(child: SizedBox(height: 80)),
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(child: SizedBox(height: 15)),
+              const SliverToBoxAdapter(child: ListViewCategoryItem()),
+              const SliverToBoxAdapter(child: SizedBox(height: 80)),
+              const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Center(
