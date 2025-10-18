@@ -16,6 +16,7 @@ class UserService {
       'firstName': firstName,
       'lastName': lastName,
       'birthDate': birthDate,
+      'profileImageUrl': null,
     });
   }
 }
