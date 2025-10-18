@@ -140,7 +140,6 @@ class _ManageProfileViewState extends State<ManageProfileView> {
         }
       },
       builder: (context, state) {
-        // Initialize controllers with user data
         if (state is ProfileLoaded && firstNameController.text.isEmpty) {
           firstNameController.text = state.user.firstName;
           lastNameController.text = state.user.lastName;
