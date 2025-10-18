@@ -5,11 +5,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/authentication/bloc/auth_bloc.dart';
 import 'features/authentication/bloc/auth_event.dart';
+import 'features/authentication/bloc/auth_state.dart';
 import 'features/home/presentation/view_model/favourite_cubit/favourite_cubit.dart';
 import 'features/home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'firebase_options.dart';
 import 'features/authentication/services/auth_service.dart';
+import 'features/profile/services/profile_service.dart';
+import 'features/profile/bloc/profile_bloc.dart';
+import 'features/profile/bloc/profile_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,12 +47,26 @@ class PlanMateApp extends StatelessWidget {
             return FavoriteCubit()..fetchFavorites();
           },
         ),
+        BlocProvider(
+          create: (context) {
+            return ProfileBloc(ProfileService());
+          },
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'PlanMate',
         theme: ThemeData(fontFamily: 'Poppins'),
-        home: const SplashView(),
+        home: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthAuthenticated && state.user != null) {
+              context.read<ProfileBloc>().add(
+                    LoadUserProfile(userId: state.user!.uid),
+                  );
+            }
+          },
+          child: const SplashView(),
+        ),
       ),
     );
   }
