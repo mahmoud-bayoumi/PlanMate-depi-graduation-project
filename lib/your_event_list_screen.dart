@@ -73,28 +73,58 @@ class EventsListScreen extends StatelessWidget {
   }
 
   Widget _buildTaskItem(BuildContext context, EventModel event, Task task) {
-    return ListTile(
-      title: Text(task.title),
-      subtitle: Text(task.description),
-      trailing: TextButton(
-        onPressed: task.done
-            ? null
-            : () {
-                context.read<UserEventsBloc>().add(
-                  MarkTaskDone(event.title, task.title),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(" '${task.title}' marked as done")),
-                );
-              },
-        child: Text(
-          task.done ? "Completed" : "Join Now",
-          style: TextStyle(
-            color: task.done ? Colors.green : Colors.red,
-            fontWeight: FontWeight.bold,
+    return StatefulBuilder(
+      builder: (context, setState) {
+        // local stage state (0 = Join Now, 1 = Uncompleted, 2 = Completed)
+        int stage = task.done ? 2 : 0;
+
+        return ListTile(
+          title: Text(task.title),
+          subtitle: Text(task.description),
+          trailing: StatefulBuilder(
+            builder: (context, localSetState) {
+              return TextButton(
+                onPressed: stage == 2
+                    ? null
+                    : () {
+                        if (stage == 0) {
+                          // first click — change to Uncompleted
+                          localSetState(() => stage = 1);
+                        } else if (stage == 1) {
+                          // second click — mark completed & update Firestore
+                          localSetState(() => stage = 2);
+
+                          context.read<UserEventsBloc>().add(
+                            MarkTaskDone(event.title, task.title),
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "'${task.title}' marked as completed!",
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                child: Text(
+                  stage == 0
+                      ? "Join Now"
+                      : stage == 1
+                      ? "Uncompleted"
+                      : "Completed",
+                  style: TextStyle(
+                    color: stage == 2
+                        ? Colors.green
+                        : (stage == 1 ? Colors.red : Colors.red),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            },
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
