@@ -78,12 +78,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else if (state is AuthAuthenticated) {
-          // Load the logged-in user's events
+          // ✅ Trigger user events loading after successful login
           context.read<UserEventsBloc>().add(LoadUserEvents());
 
-          Navigator.pushReplacement(
-            context,
+          // ✅ Navigate to main view
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavigateMainView()),
+            (route) => false,
           );
         }
       },

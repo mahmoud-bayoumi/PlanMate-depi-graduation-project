@@ -7,27 +7,26 @@ class UserEventService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // ✅ Fixed collection path and included tasks
   Future<void> addEventToUserList(EventModel event) async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = _auth.currentUser;
     if (user == null) throw Exception("No logged in user.");
 
-    final userEventsRef = FirebaseFirestore.instance
-        .collection('userEvents')
+    final userEventsRef = _firestore
+        .collection('usersData')      // Correct top-level collection
         .doc(user.uid)
-        .collection('events');
+        .collection('userEvents');   // Matches getUserEvents()
 
-    // Check if event already exists (based on title)
+    // Check if event already exists
     final existingEvent = await userEventsRef
         .where('title', isEqualTo: event.title)
         .limit(1)
         .get();
 
     if (existingEvent.docs.isNotEmpty) {
-      // Throw a specific exception that we can catch in Bloc
       throw Exception("Event already in your list!");
     }
 
-    // Otherwise add it
     await userEventsRef.add({
       'title': event.title,
       'image': event.image,
@@ -35,6 +34,7 @@ class UserEventService {
       'time': event.time,
       'address': event.address,
       'phone': event.phone,
+      'tasks': event.tasks.map((t) => t.toMap()).toList(), // ✅ include tasks
     });
   }
 
@@ -54,44 +54,34 @@ class UserEventService {
           .map((t) => Task.fromMap(Map<String, dynamic>.from(t)))
           .toList();
 
-      return EventModel(
-        title: data['title'] ?? '',
-        image: data['image'] ?? '',
-        date: data['date'] ?? '',
-        time: data['time'] ?? '',
-        address: data['address'] ?? '',
-        phone: data['phone'] ?? '',
-        tasks: tasks,
-      );
+      return EventModel.fromMap(data, tasks);
     }).toList();
   }
 
   Future<void> markTaskAsDone(String eventTitle, String taskTitle) async {
-  final user = _auth.currentUser;
-  if (user == null) throw Exception("No logged-in user found.");
+    final user = _auth.currentUser;
+    if (user == null) throw Exception("No logged-in user found.");
 
-  final eventRef = _firestore
-      .collection('usersData')
-      .doc(user.uid)
-      .collection('userEvents')
-      .doc(eventTitle);
+    final eventRef = _firestore
+        .collection('usersData')
+        .doc(user.uid)
+        .collection('userEvents');
 
-  final doc = await eventRef.get();
-  if (!doc.exists) return;
+    // Find the event doc by title
+    final query = await eventRef.where('title', isEqualTo: eventTitle).limit(1).get();
+    if (query.docs.isEmpty) return;
 
-  final data = doc.data()!;
-  final tasks = (data['tasks'] as List<dynamic>).map((t) {
-    final taskMap = Map<String, dynamic>.from(t);
-    if (taskMap['title'] == taskTitle) {
-      final currentDone = taskMap['done'] ?? false;
-      // toggle done state
-      taskMap['done'] = !currentDone;
-    }
-    return taskMap;
-  }).toList();
+    final docRef = query.docs.first.reference;
+    final data = query.docs.first.data();
 
-  await eventRef.update({'tasks': tasks});
-}
+    final tasks = (data['tasks'] as List<dynamic>).map((t) {
+      final taskMap = Map<String, dynamic>.from(t);
+      if (taskMap['title'] == taskTitle) {
+        taskMap['done'] = !(taskMap['done'] ?? false);
+      }
+      return taskMap;
+    }).toList();
 
-
+    await docRef.update({'tasks': tasks});
+  }
 }
