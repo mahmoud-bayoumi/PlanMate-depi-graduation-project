@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_event.dart';
 import '../../bloc/auth_bloc.dart';
 import '../../bloc/auth_event.dart';
 import '../../bloc/auth_state.dart';
@@ -76,6 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else if (state is AuthAuthenticated) {
+          // ✅ Trigger user events loading after successful login
+          context.read<UserEventsBloc>().add(LoadUserEvents());
+
+          // ✅ Navigate to main view
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavigateMainView()),
             (route) => false,

@@ -6,14 +6,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'features/authentication/bloc/auth_bloc.dart';
 import 'features/authentication/bloc/auth_event.dart';
 import 'features/authentication/bloc/auth_state.dart';
+import 'features/home/data/services/user_event_service.dart';
 import 'features/home/presentation/view_model/favourite_cubit/favourite_cubit.dart';
 import 'features/home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
+import 'features/home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import 'features/home/presentation/view_model/user_events_bloc/user_events_event.dart';
+import 'features/profile/bloc/profile_bloc.dart';
+import 'features/profile/bloc/profile_event.dart';
+import 'features/profile/services/profile_service.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'firebase_options.dart';
 import 'features/authentication/services/auth_service.dart';
-import 'features/profile/services/profile_service.dart';
-import 'features/profile/bloc/profile_bloc.dart';
-import 'features/profile/bloc/profile_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,26 +35,23 @@ class PlanMateApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // Auth Bloc
         BlocProvider(
-          create: (context) {
-            return AuthBloc(AuthService())..add(AuthStarted());
-          },
+          create: (context) => AuthBloc(AuthService())..add(AuthStarted()),
         ),
-        BlocProvider(
-          create: (context) {
-            return GetCategoryCubit()..getCategories();
-          },
-        ),
-        BlocProvider(
-          create: (context) {
-            return FavoriteCubit()..fetchFavorites();
-          },
-        ),
-        BlocProvider(
-          create: (context) {
-            return ProfileBloc(ProfileService());
-          },
-        ),
+
+        // Categories
+        BlocProvider(create: (context) => GetCategoryCubit()..getCategories()),
+
+        // Favorites
+        BlocProvider(create: (context) => FavoriteCubit()..fetchFavorites()),
+
+        // User Events (your feature)
+        BlocProvider(create: (context) => UserEventsBloc(UserEventService())),
+
+        // Profile Bloc (teammate’s feature)
+        BlocProvider(create: (context) => ProfileBloc(ProfileService())),
+        //BlocProvider(create: (context) => UserEventsBloc(UserEventService())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -60,9 +60,13 @@ class PlanMateApp extends StatelessWidget {
         home: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticated && state.user != null) {
+              // Load user profile after successful authentication
               context.read<ProfileBloc>().add(
-                    LoadUserProfile(userId: state.user!.uid),
-                  );
+                LoadUserProfile(userId: state.user!.uid),
+              );
+
+              // ✅ Fixed here — no `userId` argument
+              //context.read<UserEventsBloc>().add(LoadUserEvents());
             }
           },
           child: const SplashView(),

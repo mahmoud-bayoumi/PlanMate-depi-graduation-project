@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/constants.dart';
 import '../../../favourites/presentation/view/favourite_view_body.dart';
 import '../../../home/presentation/view/home_view_body.dart';
 import '../../../home/presentation/view/widgets/icon_with_under_line.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_event.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../../../../your_event_list_screen.dart';
 
@@ -15,7 +18,16 @@ class NavigateMainView extends StatefulWidget {
 
 class _NavigateMainViewState extends State<NavigateMainView> {
   int currentIndex = 0;
- 
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 🔹 Automatically load user events when the main view starts
+    // This ensures the "My Events" list is always up-to-date
+    context.read<UserEventsBloc>().add(LoadUserEvents());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

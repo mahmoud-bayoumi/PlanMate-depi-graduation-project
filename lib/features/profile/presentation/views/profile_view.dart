@@ -3,6 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../authentication/bloc/auth_bloc.dart';
 import '../../../authentication/bloc/auth_event.dart';
 import '../../../authentication/presentation/view/login_screen.dart';
+import '../../../home/presentation/view_model/favourite_cubit/favourite_cubit.dart';
+import '../../../home/presentation/view_model/favourite_cubit/favourite_state.dart';
+import '../../../home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
+import '../../../home/presentation/view_model/get_category_cubit/get_category_state.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_state.dart';
 import '../../bloc/profile_bloc.dart';
 import '../../bloc/profile_state.dart';
 import 'widgets/profile_avatar.dart';
@@ -55,15 +61,9 @@ class ProfileView extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 25),
-
-                  ProfileAvatar(
-                    imageUrl: profileImageUrl,
-                  ),
-
+                  ProfileAvatar(imageUrl: profileImageUrl),
                   const SizedBox(height: 24),
-
                   Text(
                     userName,
                     style: const TextStyle(
@@ -74,9 +74,7 @@ class ProfileView extends StatelessWidget {
                       letterSpacing: 0.5,
                     ),
                   ),
-
                   const SizedBox(height: 60),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
@@ -88,7 +86,8 @@ class ProfileView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ManageProfileView(),
+                                builder: (context) =>
+                                    const ManageProfileView(),
                               ),
                             );
                           },
@@ -101,7 +100,8 @@ class ProfileView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ChangePasswordView(),
+                                builder: (context) =>
+                                    const ChangePasswordView(),
                               ),
                             );
                           },
@@ -114,7 +114,8 @@ class ProfileView extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TermsConditionsView(),
+                                builder: (context) =>
+                                    const TermsConditionsView(),
                               ),
                             );
                           },
@@ -136,13 +137,26 @@ class ProfileView extends StatelessWidget {
                         ProfileMenuItem(
                           icon: Icons.logout,
                           title: 'Logout',
-                          onTap: () {
+                          onTap: () async {
+                            // Sign out user
                             context.read<AuthBloc>().add(AuthSignOut());
-                            Navigator.pushReplacement(
+
+                            // Clear BLoCs data manually (your logic)
+                            context.read<UserEventsBloc>().emit(UserEventsInitial());
+                            context.read<FavoriteCubit>().emit(FavoriteInitial());
+                            context.read<GetCategoryCubit>().emit(GetCategoryInitial());
+
+                            // Optional: clear any saved data if needed
+                            // final prefs = await SharedPreferences.getInstance();
+                            // await prefs.clear();
+
+                            // Navigate to login screen
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const LoginScreen(),
                               ),
+                              (route) => false,
                             );
                           },
                           showArrow: false,

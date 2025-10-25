@@ -1,7 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/home/data/models/event.dart';
+import 'features/home/data/services/user_event_service.dart';
+import 'features/home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import 'features/home/presentation/view_model/user_events_bloc/user_events_event.dart';
+import 'features/home/presentation/view_model/user_events_bloc/user_events_state.dart';
 import 'your_event_list_screen.dart';
+import 'package:share_plus/share_plus.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   const EventDetailsScreen({super.key, required this.eventModel});
@@ -97,13 +103,28 @@ class EventDetailsScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EventsListScreen(),
-                      ),
-                    );
+                  onPressed: () async {
+                    final bloc = context.read<UserEventsBloc>();
+                    bloc.add(AddUserEvent(eventModel));
+
+                    // Listen once for the result
+                    final subscription = bloc.stream.listen((state) {
+                      if (state is UserEventsError) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(state.message)));
+                      } else if (state is UserEventsLoaded) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Event added to your list!"),
+                          ),
+                        );
+                      }
+                    });
+
+                    // Auto-cancel after short delay
+                    await Future.delayed(const Duration(seconds: 2));
+                    await subscription.cancel();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
