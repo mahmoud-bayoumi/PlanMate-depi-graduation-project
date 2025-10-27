@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../authentication/bloc/auth_bloc.dart';
 import '../../../authentication/bloc/auth_event.dart';
 import '../../../authentication/presentation/view/login_screen.dart';
@@ -10,6 +11,7 @@ import '../../../home/presentation/view_model/get_category_cubit/get_category_st
 import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
 import '../../../home/presentation/view_model/user_events_bloc/user_events_state.dart';
 import '../../bloc/profile_bloc.dart';
+import '../../bloc/profile_event.dart';
 import '../../bloc/profile_state.dart';
 import 'widgets/profile_avatar.dart';
 import 'widgets/profile_menu_item.dart';
@@ -18,13 +20,49 @@ import 'change_password_view.dart';
 import 'terms_conditions_view.dart';
 import 'support_view.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadProfile();
+    });
+  }
+
+  void _loadProfile() {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final profileState = context.read<ProfileBloc>().state;
+
+    if (userId != null && 
+        profileState is! ProfileLoaded && 
+        profileState is! ProfileLoading &&
+        profileState is! ProfileUpdating) {
+      context.read<ProfileBloc>().add(LoadUserProfile(userId: userId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, profileState) {
+        if (profileState is ProfileLoading || profileState is ProfileInitial) {
+          return const Scaffold(
+            backgroundColor: Color(0xFFF5F5F5),
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF1D61E7),
+              ),
+            ),
+          );
+        }
+
         String userName = 'User Name';
         String? profileImageUrl;
 
@@ -138,19 +176,13 @@ class ProfileView extends StatelessWidget {
                           icon: Icons.logout,
                           title: 'Logout',
                           onTap: () async {
-                            // Sign out user
                             context.read<AuthBloc>().add(AuthSignOut());
 
-                            // Clear BLoCs data manually (your logic)
                             context.read<UserEventsBloc>().emit(UserEventsInitial());
                             context.read<FavoriteCubit>().emit(FavoriteInitial());
                             context.read<GetCategoryCubit>().emit(GetCategoryInitial());
+                            context.read<ProfileBloc>().emit(ProfileInitial());
 
-                            // Optional: clear any saved data if needed
-                            // final prefs = await SharedPreferences.getInstance();
-                            // await prefs.clear();
-
-                            // Navigate to login screen
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(

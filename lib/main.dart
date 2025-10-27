@@ -35,23 +35,25 @@ class PlanMateApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Auth Bloc
         BlocProvider(
           create: (context) => AuthBloc(AuthService())..add(AuthStarted()),
         ),
 
-        // Categories
-        BlocProvider(create: (context) => GetCategoryCubit()..getCategories()),
+        BlocProvider(
+          create: (context) => GetCategoryCubit()..getCategories(),
+        ),
 
-        // Favorites
-        BlocProvider(create: (context) => FavoriteCubit()..fetchFavorites()),
+        BlocProvider(
+          create: (context) => FavoriteCubit()..fetchFavorites(),
+        ),
 
-        // User Events (your feature)
-        BlocProvider(create: (context) => UserEventsBloc(UserEventService())),
+        BlocProvider(
+          create: (context) => UserEventsBloc(UserEventService()),
+        ),
 
-        // Profile Bloc (teammate’s feature)
-        BlocProvider(create: (context) => ProfileBloc(ProfileService())),
-        //BlocProvider(create: (context) => UserEventsBloc(UserEventService())),
+        BlocProvider(
+          create: (context) => ProfileBloc(ProfileService()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -60,13 +62,14 @@ class PlanMateApp extends StatelessWidget {
         home: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticated && state.user != null) {
-              // Load user profile after successful authentication
-              context.read<ProfileBloc>().add(
-                LoadUserProfile(userId: state.user!.uid),
-              );
-
-              // ✅ Fixed here — no `userId` argument
-              //context.read<UserEventsBloc>().add(LoadUserEvents());
+              Future.delayed(const Duration(milliseconds: 200), () {
+                if (context.mounted) {
+                  // Load user profile after successful authentication
+                  context.read<ProfileBloc>().add(
+                        LoadUserProfile(userId: state.user!.uid),
+                      );
+                }
+              });
             }
           },
           child: const SplashView(),
