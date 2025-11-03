@@ -60,14 +60,14 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                             showDialog(
                               context: context,
                               builder: (ctx) => AlertDialog(
-                                title: const Text("حذف الرسالة"),
+                                title: const Text("Delete Message"),
                                 content: const Text(
-                                  "هل أنت متأكد أنك تريد حذف هذه الرسالة؟",
+                                  "Are you sure you want to delete this message?",
                                 ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(ctx),
-                                    child: const Text("إلغاء"),
+                                    child: const Text("Cancel"),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -77,7 +77,7 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                                       );
                                     },
                                     child: const Text(
-                                      "حذف",
+                                      "Delete",
                                       style: TextStyle(color: Colors.red),
                                     ),
                                   ),
