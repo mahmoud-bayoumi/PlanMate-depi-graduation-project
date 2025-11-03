@@ -19,6 +19,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendMessage>(_onSendMessage);
     on<MessagesUpdated>(_onMessagesUpdated);
     on<MessagesUpdatedError>(_onMessagesUpdatedError);
+    on<DeleteMessage>(_onDeleteMessage); 
   }
 
   void _onLoadMessages(LoadMessages event, Emitter<ChatState> emit) {
@@ -33,7 +34,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         .snapshots()
         .listen(
           (snapshot) {
-            final messages = snapshot.docs.map((doc) => doc.data()).toList();
+            final messages = snapshot.docs
+                .map((doc) => {
+                      'id': doc.id, 
+                      ...doc.data(),
+                    })
+                .toList();
             add(MessagesUpdated(messages));
           },
           onError: (error) {
@@ -73,6 +79,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       });
     } catch (e) {
       emit(ChatError("Failed to send message: $e"));
+    }
+  }
+
+  Future<void> _onDeleteMessage(
+    DeleteMessage event,
+    Emitter<ChatState> emit,
+  ) async {
+    try {
+      await _firestore.collection('messages').doc(event.messageId).delete();
+    } catch (e) {
+      emit(ChatError("Failed to delete message: $e"));
     }
   }
 
