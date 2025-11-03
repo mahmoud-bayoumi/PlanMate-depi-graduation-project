@@ -36,7 +36,6 @@ class MessagesUpdatedError extends ChatEvent {
   List<Object?> get props => [errorMessage];
 }
 
-
 class DeleteMessage extends ChatEvent {
   final String messageId;
 

@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:planmate_app/core/utils/constants.dart';
-import 'package:planmate_app/event_details.dart';
+import '../../../../../event_details.dart';
+import '../../../data/models/event.dart';
+import 'favourite_icon.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({super.key, required this.isFav});
+  const EventItem({super.key, required this.isFav, required this.eventModel});
   final bool isFav;
+  final EventModel eventModel;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -12,7 +15,7 @@ class EventItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return EventDetailsScreen();
+              return EventDetailsScreen(eventModel: eventModel);
             },
           ),
         );
@@ -41,22 +44,22 @@ class EventItem extends StatelessWidget {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  child: Image.asset(
-                    'assets/images/event.jpg',
+                  child: CachedNetworkImage(
+                    imageUrl: eventModel.image,
                     height: 180,
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
-                FavouriteIcon(isFav: isFav),
+                FavouriteIcon(eventModel: eventModel),
               ],
             ),
             const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                "Laugh with Khalil Comedy / 20.12.2024",
-                style: TextStyle(
+                "${eventModel.title} / ${eventModel.date}",
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -64,21 +67,21 @@ class EventItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
                   Expanded(
                     child: Text(
-                      "10:30 PM, Ali Baba Cafe, New Cairo",
-                      style: TextStyle(
+                      "${eventModel.time}, ${eventModel.address}",
+                      style: const TextStyle(
                         color: Color(0xff8D8D8D),
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Free",
                     style: TextStyle(
                       color: Color(0xff6564DB),
@@ -90,37 +93,6 @@ class EventItem extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class FavouriteIcon extends StatelessWidget {
-  const FavouriteIcon({
-    super.key,
-    required this.isFav,
-  });
-
-  final bool isFav;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 10,
-      right: 10,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.8),
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          icon: Icon(
-            isFav ? Icons.star : Icons.star_border_purple500_sharp,
-            color: Color(kPrimaryColor),
-            size: 30,
-          ),
-          onPressed: () {},
         ),
       ),
     );

@@ -1,18 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../data/models/category.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem({
     super.key,
     required this.isSelected,
+    required this.category,
   });
   final bool isSelected;
+  final CategoryModel category;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 85,
       height: 90,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? Colors.blue : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -20,27 +24,27 @@ class CategoryItem extends StatelessWidget {
                 ? Colors.blue
                 : Colors.black.withValues(alpha: 0.1),
             blurRadius: isSelected ? 0 : 6,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadiusGeometry.only(
+            borderRadius: const BorderRadiusGeometry.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: Image.asset(
-              'assets/images/Category.jpg',
-              fit: BoxFit.cover,
+            child: CachedNetworkImage(
+              imageUrl: category.image,
+              fit: BoxFit.fill,
+              width: 150,
+              height: 65,
             ),
           ),
-          SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           Text(
-            "Comedy",
+            category.name,
             style: TextStyle(
               color: isSelected ? Colors.white : Colors.black,
               fontWeight: FontWeight.w600,

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:planmate_app/features/authentication/services/user_firestore_service.dart';
+import 'user_firestore_service.dart';
 
 class AuthService {
   final _userService = UserService();

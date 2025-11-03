@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
-import 'package:planmate_app/features/authentication/presentation/view/login_screen.dart';
-import 'package:planmate_app/features/navigation_bar/presentation/view/navigate_main_view.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_state.dart';
+import '../presentation/view/login_screen.dart';
+import '../../navigation_bar/presentation/view/navigate_main_view.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

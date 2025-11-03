@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
+import '../../bloc/auth_bloc.dart';
+import '../../bloc/auth_event.dart';
+import '../../bloc/auth_state.dart';
 
 class ResetScreen extends StatefulWidget {
   const ResetScreen({super.key});
@@ -40,9 +40,9 @@ class _ResetScreenState extends State<ResetScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: Color(0xFFF7F8FA),
+          backgroundColor: const Color(0xFFF7F8FA),
           appBar: AppBar(
-            backgroundColor: Color(0xFFF7F8FA),
+            backgroundColor: const Color(0xFFF7F8FA),
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1C1E)),
@@ -93,7 +93,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: 'abc@example.com',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'PlusJakartaSans',
@@ -103,11 +103,11 @@ class _ResetScreenState extends State<ResetScreen> {
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Colors.white),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Color(0xFFEDF1F3)),
+                      borderSide: const BorderSide(color: Color(0xFFEDF1F3)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -166,7 +166,7 @@ class _ResetScreenState extends State<ResetScreen> {
                             child: Container(
                               width: 36,
                               height: 36,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color(0xFF5669FF),
                                 shape: BoxShape.circle,
                               ),

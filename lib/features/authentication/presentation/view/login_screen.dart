@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_bloc.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_event.dart';
-import 'package:planmate_app/features/authentication/bloc/auth_state.dart';
-import 'package:planmate_app/features/authentication/presentation/view/reset_screen.dart';
-import 'package:planmate_app/features/authentication/presentation/view/signup_screen.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/auth_button.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/auth_footer.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/auth_header.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/custom_text_field.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/password_field.dart';
-import 'package:planmate_app/features/authentication/presentation/view/widgets/social_login_button.dart';
-import 'package:planmate_app/features/navigation_bar/presentation/view/navigate_main_view.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
+import '../../../home/presentation/view_model/user_events_bloc/user_events_event.dart';
+import '../../bloc/auth_bloc.dart';
+import '../../bloc/auth_event.dart';
+import '../../bloc/auth_state.dart';
+import 'reset_screen.dart';
+import 'signup_screen.dart';
+import 'widgets/auth_button.dart';
+import 'widgets/auth_footer.dart';
+import 'widgets/auth_header.dart';
+import 'widgets/custom_text_field.dart';
+import 'widgets/password_field.dart';
+import 'widgets/social_login_button.dart';
+import '../../../navigation_bar/presentation/view/navigate_main_view.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -76,6 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else if (state is AuthAuthenticated) {
+          // ✅ Trigger user events loading after successful login
+          context.read<UserEventsBloc>().add(LoadUserEvents());
+
+          // ✅ Navigate to main view
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavigateMainView()),
             (route) => false,

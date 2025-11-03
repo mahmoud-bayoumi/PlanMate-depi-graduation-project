@@ -23,7 +23,7 @@ class CustomInputField extends StatelessWidget {
             fontFamily: 'PlusJakartaSans',
             fontSize: 14,
             fontWeight: FontWeight.w500,
-             color: Color(0xFF6C7278),
+            color: Color(0xFF6C7278),
           ),
         ),
         const SizedBox(height: 5),
@@ -31,22 +31,19 @@ class CustomInputField extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: const Color(0xFFE2E2E2),
-              width: 1,
-            ),
+            border: Border.all(color: const Color(0xFFE2E2E2), width: 1),
           ),
           child: TextField(
             controller: controller,
             style: const TextStyle(
               fontFamily: 'PlusJakartaSans',
               fontSize: 16,
-              color:Color(0xFF1A1C1E),
-             letterSpacing: 0.01,
+              color: Color(0xFF1A1C1E),
+              letterSpacing: 0.01,
             ),
             decoration: InputDecoration(
               hintText: placeholder,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 fontFamily: 'PlusJakartaSans',
                 fontSize: 14,
                 color: Color(0x801A1C1E),
