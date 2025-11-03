@@ -17,10 +17,6 @@ void main() async {
   // Load environment variables and initialize Firebase
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: 'fady@gmail.com',
-    password: '123456',
-  );
 
   runApp(const PlanMateApp());
 }
@@ -36,7 +32,7 @@ class PlanMateApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'PlanMate',
         theme: ThemeData(fontFamily: 'Poppins'),
-        home: const GroupChatView(),
+        home: const SplashView(),
       ),
     );
   }
