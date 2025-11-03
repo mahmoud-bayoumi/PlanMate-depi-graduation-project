@@ -9,7 +9,6 @@ abstract class ChatEvent extends Equatable {
 
 class LoadMessages extends ChatEvent {}
 
-
 class SendMessage extends ChatEvent {
   final String content;
 
@@ -28,7 +27,6 @@ class MessagesUpdated extends ChatEvent {
   List<Object?> get props => [messages];
 }
 
-
 class MessagesUpdatedError extends ChatEvent {
   final String errorMessage;
 
@@ -36,4 +34,14 @@ class MessagesUpdatedError extends ChatEvent {
 
   @override
   List<Object?> get props => [errorMessage];
+}
+
+
+class DeleteMessage extends ChatEvent {
+  final String messageId;
+
+  const DeleteMessage(this.messageId);
+
+  @override
+  List<Object?> get props => [messageId];
 }
