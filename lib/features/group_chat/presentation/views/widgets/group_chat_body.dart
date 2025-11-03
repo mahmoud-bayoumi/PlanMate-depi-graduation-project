@@ -54,15 +54,48 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                       }
 
                       final isMe = msg['senderId'] == currentUserId;
-                      return ChatBubble(
-                        isMe: isMe,
-                        message: msg['text'] ?? '',
-                        username: isMe
-                            ? 'You'
-                            : (displayEmail.split('@').first),
-                        userColor: isMe
-                            ? Colors.blue
-                            : getUserColor(msg['senderId']),
+                      return GestureDetector(
+                        onLongPress: () {
+                          if (isMe) {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text("حذف الرسالة"),
+                                content: const Text(
+                                  "هل أنت متأكد أنك تريد حذف هذه الرسالة؟",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(ctx),
+                                    child: const Text("إلغاء"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(ctx);
+                                      context.read<ChatBloc>().add(
+                                        DeleteMessage(msg['id'] ?? ''),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "حذف",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        child: ChatBubble(
+                          isMe: isMe,
+                          message: msg['text'] ?? '',
+                          username: isMe
+                              ? 'You'
+                              : (displayEmail.split('@').first),
+                          userColor: isMe
+                              ? Colors.blue
+                              : getUserColor(msg['senderId']),
+                        ),
                       );
                     },
                   );
@@ -73,7 +106,6 @@ class _GroupChatBodyState extends State<GroupChatBody> {
             ),
           ),
         ),
-
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
