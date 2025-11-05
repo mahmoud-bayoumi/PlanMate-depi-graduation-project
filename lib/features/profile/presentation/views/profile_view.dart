@@ -40,8 +40,8 @@ class _ProfileViewState extends State<ProfileView> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     final profileState = context.read<ProfileBloc>().state;
 
-    if (userId != null && 
-        profileState is! ProfileLoaded && 
+    if (userId != null &&
+        profileState is! ProfileLoaded &&
         profileState is! ProfileLoading &&
         profileState is! ProfileUpdating) {
       context.read<ProfileBloc>().add(LoadUserProfile(userId: userId));
@@ -56,9 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
           return const Scaffold(
             backgroundColor: Color(0xFFF5F5F5),
             body: Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF1D61E7),
-              ),
+              child: CircularProgressIndicator(color: Color(0xFF1D61E7)),
             ),
           );
         }
@@ -124,8 +122,7 @@ class _ProfileViewState extends State<ProfileView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const ManageProfileView(),
+                                builder: (context) => const ManageProfileView(),
                               ),
                             );
                           },
@@ -176,12 +173,17 @@ class _ProfileViewState extends State<ProfileView> {
                           icon: Icons.logout,
                           title: 'Logout',
                           onTap: () async {
-                            context.read<AuthBloc>().add(AuthSignOut());
-
-                            context.read<UserEventsBloc>().emit(UserEventsInitial());
-                            context.read<FavoriteCubit>().emit(FavoriteInitial());
-                            context.read<GetCategoryCubit>().emit(GetCategoryInitial());
+                            context.read<UserEventsBloc>().emit(
+                              UserEventsInitial(),
+                            );
+                            context.read<FavoriteCubit>().emit(
+                              FavoriteInitial(),
+                            );
+                            context.read<GetCategoryCubit>().emit(
+                              GetCategoryInitial(),
+                            );
                             context.read<ProfileBloc>().emit(ProfileInitial());
+                            context.read<AuthBloc>().add(AuthSignOut());
 
                             Navigator.pushAndRemoveUntil(
                               context,

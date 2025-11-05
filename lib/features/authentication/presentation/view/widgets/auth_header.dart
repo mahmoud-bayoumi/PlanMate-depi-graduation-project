@@ -4,11 +4,7 @@ class AuthHeader extends StatelessWidget {
   final String title;
   final bool showLogo;
 
-  const AuthHeader({
-    super.key,
-    required this.title,
-    this.showLogo = true,
-  });
+  const AuthHeader({super.key, required this.title, this.showLogo = true});
 
   @override
   Widget build(BuildContext context) {

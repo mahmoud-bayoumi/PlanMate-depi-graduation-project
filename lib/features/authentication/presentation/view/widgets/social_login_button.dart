@@ -4,11 +4,7 @@ class SocialLoginButton extends StatelessWidget {
   final String imagePath;
   final VoidCallback? onTap;
 
-  const SocialLoginButton({
-    super.key,
-    required this.imagePath,
-    this.onTap,
-  });
+  const SocialLoginButton({super.key, required this.imagePath, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +18,7 @@ class SocialLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
         ),
-        child: Center(
-          child: Image.asset(
-            imagePath,
-            width: 24,
-            height: 24,
-          ),
-        ),
+        child: Center(child: Image.asset(imagePath, width: 24, height: 24)),
       ),
     );
   }

@@ -3,15 +3,28 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'user_firestore_service.dart';
 
 class AuthService {
-  final _userService = UserService();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserService _userService;
+  final FirebaseAuth _auth;
+  final GoogleSignIn _googleSignIn;
 
+  // Constructor for dependency injection and easier testing
+  AuthService({
+    UserService? userService,
+    FirebaseAuth? auth,
+    GoogleSignIn? googleSignIn,
+  }) : _userService = userService ?? UserService(),
+       _auth = auth ?? FirebaseAuth.instance,
+       _googleSignIn = googleSignIn ?? GoogleSignIn();
+
+  // Stream of auth changes
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
+  // Get the current user
   User? getCurrentUser() {
     return _auth.currentUser;
   }
 
+  // Sign in with email and password
   Future<User?> signInWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -20,6 +33,7 @@ class AuthService {
       );
       return result.user;
     } on FirebaseAuthException catch (caughtError) {
+      // For user-friendly messages
       if (caughtError.code == 'user-not-found') {
         throw Exception('No account found with this email');
       } else if (caughtError.code == 'wrong-password') {
@@ -38,6 +52,7 @@ class AuthService {
     }
   }
 
+  // Sign up with email and password
   Future<User?> signUpWithEmail(
     String email,
     String password,
@@ -46,18 +61,28 @@ class AuthService {
     String birthDate,
   ) async {
     try {
+      // Create user with email and password
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await _userService.createUser(
-        result.user!.uid,
-        firstName,
-        lastName,
-        birthDate,
-      );
-      return result.user;
+
+      final user = result.user;
+      if (user != null) {
+        // Store additional user details in Firestore
+        await _userService.createUser(user.uid, firstName, lastName, birthDate);
+
+        // Update display name
+        final fullName = "$firstName $lastName";
+        await user.updateDisplayName(fullName);
+        await user.reload();
+
+        // Return the updated user
+        return _auth.currentUser;
+      }
+      return null;
     } on FirebaseAuthException catch (caughtError) {
+      // For user-friendly messages
       if (caughtError.code == 'weak-password') {
         throw Exception('Password must be at least 6 characters long');
       } else if (caughtError.code == 'email-already-in-use') {
@@ -76,21 +101,27 @@ class AuthService {
     }
   }
 
+  // Sign in with Google
   Future<User?> signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
+      // Trigger the Google Sign-In flow
+      final googleUser = await _googleSignIn.signIn();
 
+      // User cancelled the sign-in
       if (googleUser == null) {
         throw Exception('Google sign-in was cancelled');
       }
 
+      // Get authentication tokens
       final googleAuth = await googleUser.authentication;
 
+      // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
+      // Sign in with the credential
       UserCredential result = await _auth.signInWithCredential(credential);
       return result.user;
     } on FirebaseAuthException catch (caughtError) {
@@ -102,10 +133,12 @@ class AuthService {
     }
   }
 
+  // Reset password
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (caughtError) {
+      // For user-friendly messages
       if (caughtError.code == 'user-not-found') {
         throw Exception('No user found with this email.');
       } else if (caughtError.code == 'invalid-email') {
@@ -118,11 +151,11 @@ class AuthService {
     }
   }
 
+  // Sign out
   Future<void> signOut() async {
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut();
-      await _auth.signOut();
+      await _googleSignIn.signOut(); // From Google
+      await _auth.signOut(); // From Firebase
     } catch (caughtError) {
       throw Exception('Sign out failed.');
     }

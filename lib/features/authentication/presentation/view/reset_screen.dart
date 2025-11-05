@@ -12,6 +12,7 @@ class ResetScreen extends StatefulWidget {
 }
 
 class _ResetScreenState extends State<ResetScreen> {
+  // Controller for email input
   final TextEditingController emailController = TextEditingController();
 
   @override
@@ -19,6 +20,7 @@ class _ResetScreenState extends State<ResetScreen> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
+          // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -26,6 +28,7 @@ class _ResetScreenState extends State<ResetScreen> {
             ),
           );
         } else if (state is AuthUnauthenticated) {
+          // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('If this email exists, a reset link has been sent'),
@@ -54,7 +57,7 @@ class _ResetScreenState extends State<ResetScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //Title
+                // Title
                 const Text(
                   'Reset Password',
                   style: TextStyle(
@@ -65,7 +68,8 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                //Description
+
+                // Description
                 const Text(
                   'Please enter your email address to request a password reset.',
                   style: TextStyle(
@@ -76,7 +80,8 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                //Email Label
+
+                // Email Label
                 const Text(
                   'Email',
                   style: TextStyle(
@@ -87,7 +92,8 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                //Email TextField
+
+                // Email TextField
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -120,7 +126,8 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                //Reset Button
+
+                // Reset Button
                 SizedBox(
                   width: double.infinity,
                   height: 65,
@@ -144,7 +151,7 @@ class _ResetScreenState extends State<ResetScreen> {
                     ),
                     child: Stack(
                       children: [
-                        //Centered text
+                        // Centered text
                         const Center(
                           child: Text(
                             'SEND',
@@ -157,7 +164,8 @@ class _ResetScreenState extends State<ResetScreen> {
                             ),
                           ),
                         ),
-                        //Arrow on the right
+
+                        // Arrow on the right
                         Positioned(
                           right: 0,
                           top: 0,
