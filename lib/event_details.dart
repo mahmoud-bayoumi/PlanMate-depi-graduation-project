@@ -1,11 +1,11 @@
-import 'dart:io'; // ✅ for File
-import 'package:http/http.dart' as http; // ✅ for downloading image
-import 'package:path_provider/path_provider.dart'; // ✅ for getTemporaryDirectory
+import 'dart:io'; 
+import 'package:http/http.dart' as http; 
+import 'package:path_provider/path_provider.dart'; 
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_plus/share_plus.dart'; // ✅ for sharing
+import 'package:share_plus/share_plus.dart'; 
 
 import 'features/home/data/models/event.dart';
 import 'features/home/data/services/user_event_service.dart';
@@ -95,13 +95,13 @@ https://planmateapp.com/event/${Uri.encodeComponent(eventModel.title)}
                               final file = File('${tempDir.path}/shared_event.jpg');
                               await file.writeAsBytes(response.bodyBytes);
 
-                              // ✅ Correct method from `share_plus`
+                              
                               await Share.shareXFiles(
                                 [XFile(file.path)],
                                 text: shareText,
                               );
                             } else {
-                              await Share.share(shareText); // ✅ Correct method
+                              await Share.share(shareText); 
                             }
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
