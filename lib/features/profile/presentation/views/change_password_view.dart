@@ -103,7 +103,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           confirmPasswordController.clear();
           Future.delayed(const Duration(seconds: 2), () {
             if (mounted) {
-              // ignore: use_build_context_synchronously
+              //ignore: use_build_context_synchronously
               Navigator.pop(context);
             }
           });

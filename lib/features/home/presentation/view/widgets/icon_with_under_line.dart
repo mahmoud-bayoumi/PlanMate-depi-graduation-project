@@ -15,8 +15,8 @@ class IconWithUnderLine extends StatelessWidget {
         icon,
         Container(
           height: 2,
-          width: 24, // Adjust width as needed
-          color: Colors.blue, // Underline color
+          width: 24, //Adjust width as needed
+          color: Colors.blue, //Underline color
         ),
       ],
     );

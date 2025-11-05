@@ -16,7 +16,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
 
-  /// Start listening to user's favorites in realtime
+  ///Start listening to user's favorites in realtime
   Future<void> fetchFavorites() async {
     final user = _auth.currentUser;
     if (user == null) {
@@ -31,7 +31,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         .collection('favorites');
     //print('[FavoriteCubit] Listening to: ${ref.path}');
 
-    // cancel previous subscription if exists
+    //cancel previous subscription if exists
     await _subscription?.cancel();
 
     _subscription = ref.snapshots().listen(
@@ -46,7 +46,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
               return Task(title: '', description: '', done: false);
             }).toList();
 
-            // build EventModel (assumes constructor with these fields)
+            //build EventModel (assumes constructor with these fields)
             return EventModel(
               title: (data['title'] as String?) ?? '',
               image: (data['image'] as String?) ?? '',
@@ -73,7 +73,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     );
   }
 
-  /// add: uses .add() so Firestore generates a docId (avoids collisions)
+  ///add: uses .add() so Firestore generates a docId (avoids collisions)
   Future<void> addToFavorite(EventModel event) async {
     final user = _auth.currentUser;
     if (user == null) {
@@ -110,7 +110,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  /// remove: find documents with matching title and delete them
+  ///remove: find documents with matching title and delete them
   Future<void> removeFromFavorite(String title) async {
     final user = _auth.currentUser;
     if (user == null) {
@@ -138,9 +138,9 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         await ref.doc(doc.id).delete();
         //print('[FavoriteCubit] Deleted doc id=${doc.id}');
       }
-      // snapshots listener will update the state automatically
+      //snapshots listener will update the state automatically
     } catch (e) {
-      // print('[FavoriteCubit] removeFromFavorite error: $e');
+      //print('[FavoriteCubit] removeFromFavorite error: $e');
       //print(st);
       emit(FavoriteError(e.toString()));
     }

@@ -23,8 +23,8 @@ class _NavigateMainViewState extends State<NavigateMainView> {
   void initState() {
     super.initState();
 
-    // 🔹 Automatically load user events when the main view starts
-    // This ensures the "My Events" list is always up-to-date
+    //Automatically load user events when the main view starts
+    //This ensures the "My Events" list is always up-to-date
     context.read<UserEventsBloc>().add(LoadUserEvents());
   }
 

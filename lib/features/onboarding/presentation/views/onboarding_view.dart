@@ -42,9 +42,9 @@ class _OnboardingViewState extends State<OnboardingView> {
         ],
       ),
       bottomSheet: isLastPage
-          // Last Page → Big Button
+          //Last Page -> Big Button
           ? const GetStartedButton()
-          // First Page → Indicator + Next Button
+          //First Page -> Indicator + Next Button
           : FIrstPageBottomSheet(
               isLastPage: isLastPage,
               controller: _controller,

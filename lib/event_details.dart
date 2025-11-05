@@ -1,17 +1,23 @@
+import 'dart:io'; // ✅ for File
+import 'package:http/http.dart' as http; // ✅ for downloading image
+import 'package:path_provider/path_provider.dart'; // ✅ for getTemporaryDirectory
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart'; // ✅ for sharing
+
 import 'features/home/data/models/event.dart';
 import 'features/home/data/services/user_event_service.dart';
 import 'features/home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
 import 'features/home/presentation/view_model/user_events_bloc/user_events_event.dart';
 import 'features/home/presentation/view_model/user_events_bloc/user_events_state.dart';
 import 'your_event_list_screen.dart';
-import 'package:share_plus/share_plus.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   const EventDetailsScreen({super.key, required this.eventModel});
   final EventModel eventModel;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,17 +60,58 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  const Row(
+                  // 🔹 Share button integrated correctly
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Free",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(Icons.share, color: Colors.grey),
+                      IconButton(
+                        icon: const Icon(Icons.share, color: Colors.grey),
+                        onPressed: () async {
+                          final shareText = '''
+Check out this event on PlanMate! 🎉
+
+📌 ${eventModel.title}
+📅 Date: ${eventModel.date}
+⏰ Time: ${eventModel.time}
+📍 Address: ${eventModel.address}
+📞 Contact: ${eventModel.phone}
+
+Join this event here:
+https://planmateapp.com/event/${Uri.encodeComponent(eventModel.title)}
+''';
+
+                          try {
+                            if (eventModel.image.isNotEmpty) {
+                              // Download the image temporarily
+                              final response = await http.get(Uri.parse(eventModel.image));
+                              final tempDir = await getTemporaryDirectory();
+                              final file = File('${tempDir.path}/shared_event.jpg');
+                              await file.writeAsBytes(response.bodyBytes);
+
+                              // ✅ Correct method from `share_plus`
+                              await Share.shareXFiles(
+                                [XFile(file.path)],
+                                text: shareText,
+                              );
+                            } else {
+                              await Share.share(shareText); // ✅ Correct method
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error sharing event: $e'),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -107,12 +154,11 @@ class EventDetailsScreen extends StatelessWidget {
                     final bloc = context.read<UserEventsBloc>();
                     bloc.add(AddUserEvent(eventModel));
 
-                    // Listen once for the result
                     final subscription = bloc.stream.listen((state) {
                       if (state is UserEventsError) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text(state.message)));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(state.message)),
+                        );
                       } else if (state is UserEventsLoaded) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -122,7 +168,6 @@ class EventDetailsScreen extends StatelessWidget {
                       }
                     });
 
-                    // Auto-cancel after short delay
                     await Future.delayed(const Duration(seconds: 2));
                     await subscription.cancel();
                   },
