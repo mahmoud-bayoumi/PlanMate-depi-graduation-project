@@ -37,44 +37,50 @@ class AuthService {
       throw Exception('Connection error. Please check your internet');
     }
   }
+Future<User?> signUpWithEmail(
+  String email,
+  String password,
+  String firstName,
+  String lastName,
+  String birthDate,
+) async {
+  try {
+    UserCredential result = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-  Future<User?> signUpWithEmail(
-    String email,
-    String password,
-    String firstName,
-    String lastName,
-    String birthDate,
-  ) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+    final user = result.user;
+    if (user != null) {
       await _userService.createUser(
-        result.user!.uid,
+        user.uid,
         firstName,
         lastName,
         birthDate,
       );
-      return result.user;
-    } on FirebaseAuthException catch (caughtError) {
-      if (caughtError.code == 'weak-password') {
-        throw Exception('Password must be at least 6 characters long');
-      } else if (caughtError.code == 'email-already-in-use') {
-        throw Exception(
-          'This email is already registered. Please login instead',
-        );
-      } else if (caughtError.code == 'invalid-email') {
-        throw Exception('Please enter a valid email address');
-      } else {
-        throw Exception(
-          caughtError.message ?? 'Registration failed. Please try again',
-        );
-      }
-    } catch (caughtError) {
-      throw Exception('Connection error. Please check your internet');
+
+      final fullName = "$firstName $lastName";
+      await user.updateDisplayName(fullName);
+      await user.reload(); 
+
+      return _auth.currentUser;
     }
+    return null;
+  } on FirebaseAuthException catch (caughtError) {
+    if (caughtError.code == 'weak-password') {
+      throw Exception('Password must be at least 6 characters long');
+    } else if (caughtError.code == 'email-already-in-use') {
+      throw Exception('This email is already registered. Please login instead');
+    } else if (caughtError.code == 'invalid-email') {
+      throw Exception('Please enter a valid email address');
+    } else {
+      throw Exception(caughtError.message ?? 'Registration failed. Please try again');
+    }
+  } catch (caughtError) {
+    throw Exception('Connection error. Please check your internet');
   }
+}
+
 
   Future<User?> signInWithGoogle() async {
     try {
