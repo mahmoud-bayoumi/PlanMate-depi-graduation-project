@@ -45,5 +45,24 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>planmateapp</string>
+    </array>
+  </dict>
+</array>
+
+<key>NSUserActivityTypes</key>
+<array>
+  <string>NSUserActivityTypeBrowsingWeb</string>
+</array>
+<key>com.apple.developer.associated-domains</key>
+<array>
+  <string>applinks:planmateapp.com</string>
+</array>
+
 </dict>
 </plist>
