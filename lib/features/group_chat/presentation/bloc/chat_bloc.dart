@@ -19,7 +19,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendMessage>(_onSendMessage);
     on<MessagesUpdated>(_onMessagesUpdated);
     on<MessagesUpdatedError>(_onMessagesUpdatedError);
-    on<DeleteMessage>(_onDeleteMessage); 
+    on<DeleteMessage>(_onDeleteMessage);
   }
 
   void _onLoadMessages(LoadMessages event, Emitter<ChatState> emit) {
@@ -35,10 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         .listen(
           (snapshot) {
             final messages = snapshot.docs
-                .map((doc) => {
-                      'id': doc.id, 
-                      ...doc.data(),
-                    })
+                .map((doc) => {'id': doc.id, ...doc.data()})
                 .toList();
             add(MessagesUpdated(messages));
           },
@@ -69,11 +66,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
 
     try {
-      final currentUserId = _auth.currentUser!.uid;
+      final currentUser = _auth.currentUser!;
+      final currentUserId = currentUser.uid;
+      final userEmail = currentUser.email ?? "unknown";
+
+      final userDoc = await _firestore
+          .collection('users')
+          .doc(currentUserId)
+          .get();
+      final userName = userDoc.exists
+          ? "${userDoc['firstName']} ${userDoc['lastName']}"
+          : currentUser.displayName ?? userEmail.split('@').first;
 
       await _firestore.collection('messages').add({
         'chatId': genralChatId,
         'senderId': currentUserId,
+        'senderName': userName,
         'text': event.content,
         'timestamp': FieldValue.serverTimestamp(),
       });

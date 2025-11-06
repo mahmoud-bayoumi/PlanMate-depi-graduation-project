@@ -91,7 +91,7 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                           message: msg['text'] ?? '',
                           username: isMe
                               ? 'You'
-                              : (displayEmail.split('@').first),
+                              : (msg['senderName'] ?? 'Unknown'),
                           userColor: isMe
                               ? Colors.blue
                               : getUserColor(msg['senderId']),
