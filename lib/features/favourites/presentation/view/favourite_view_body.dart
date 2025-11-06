@@ -52,7 +52,7 @@ class FavouriteViewBody extends StatelessWidget {
             ),
           );
         }
-        // fallback
+        //fallback
         return const SizedBox.shrink();
       },
     );

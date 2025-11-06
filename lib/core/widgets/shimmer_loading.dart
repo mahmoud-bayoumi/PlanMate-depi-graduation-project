@@ -31,7 +31,7 @@ class ShimmerLoading extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: CustomScrollView(
         slivers: [
-          // Search row (search field + chat icon)
+          //Search row (search field + chat icon)
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -42,7 +42,7 @@ class ShimmerLoading extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // search box placeholder (expanded)
+                  //search box placeholder (expanded)
                   Expanded(
                     child: _shimmerBox(
                       height: 48,
@@ -50,7 +50,7 @@ class ShimmerLoading extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // chat icon placeholder (square)
+                  //chat icon placeholder (square)
                   _shimmerBox(
                     width: 48,
                     height: 48,
@@ -63,7 +63,7 @@ class ShimmerLoading extends StatelessWidget {
 
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-          // Title "Category"
+          //Title "Category"
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -80,7 +80,7 @@ class ShimmerLoading extends StatelessWidget {
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
-          // Horizontal categories shimmer list
+          //Horizontal categories shimmer list
           SliverToBoxAdapter(
             child: SizedBox(
               height: 95,
@@ -102,7 +102,7 @@ class ShimmerLoading extends StatelessWidget {
 
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-          // Section title placeholder (e.g., "X Events")
+          //Section title placeholder (e.g., "X Events")
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -119,21 +119,21 @@ class ShimmerLoading extends StatelessWidget {
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
-          // Vertical list of event cards placeholders
+          //Vertical list of event cards placeholders
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Column(
                   children: [
-                    // big image placeholder
+                    //big image placeholder
                     _shimmerBox(
                       width: w,
                       height: 160,
                       radius: BorderRadius.circular(16),
                     ),
                     const SizedBox(height: 10),
-                    // title line
+                    //title line
                     Align(
                       alignment: Alignment.centerLeft,
                       child: _shimmerBox(
@@ -143,7 +143,7 @@ class ShimmerLoading extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    // meta line
+                    //meta line
                     Align(
                       alignment: Alignment.centerLeft,
                       child: _shimmerBox(

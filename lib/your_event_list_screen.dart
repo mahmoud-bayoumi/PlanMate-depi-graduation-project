@@ -75,7 +75,7 @@ class EventsListScreen extends StatelessWidget {
   Widget _buildTaskItem(BuildContext context, EventModel event, Task task) {
     return StatefulBuilder(
       builder: (context, setState) {
-        // local stage state (0 = Join Now, 1 = Uncompleted, 2 = Completed)
+        //local stage state (0 = Join Now, 1 = Uncompleted, 2 = Completed)
         int stage = task.done ? 2 : 0;
 
         return ListTile(
@@ -88,10 +88,10 @@ class EventsListScreen extends StatelessWidget {
                     ? null
                     : () {
                         if (stage == 0) {
-                          // first click — change to Uncompleted
+                          //first click —> change to Uncompleted
                           localSetState(() => stage = 1);
                         } else if (stage == 1) {
-                          // second click — mark completed & update Firestore
+                          // second click —> mark completed & update Firestore
                           localSetState(() => stage = 2);
 
                           context.read<UserEventsBloc>().add(

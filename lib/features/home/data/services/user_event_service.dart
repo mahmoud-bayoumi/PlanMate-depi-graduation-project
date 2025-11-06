@@ -7,7 +7,7 @@ class UserEventService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // ✅ Fixed collection path and included tasks
+  //collection path and included tasks
   Future<void> addEventToUserList(EventModel event) async {
     final user = _auth.currentUser;
     if (user == null) throw Exception("No logged in user.");
@@ -17,7 +17,7 @@ class UserEventService {
         .doc(user.uid)
         .collection('userEvents');   // Matches getUserEvents()
 
-    // Check if event already exists
+    //Check if event already exists
     final existingEvent = await userEventsRef
         .where('title', isEqualTo: event.title)
         .limit(1)
@@ -67,7 +67,7 @@ class UserEventService {
         .doc(user.uid)
         .collection('userEvents');
 
-    // Find the event doc by title
+    //Find the event doc by title
     final query = await eventRef.where('title', isEqualTo: eventTitle).limit(1).get();
     if (query.docs.isEmpty) return;
 

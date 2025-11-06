@@ -78,10 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else if (state is AuthAuthenticated) {
-          // ✅ Trigger user events loading after successful login
+          //Trigger user events loading after successful login
           context.read<UserEventsBloc>().add(LoadUserEvents());
 
-          // ✅ Navigate to main view
+          //Navigate to main view
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavigateMainView()),
             (route) => false,
@@ -101,11 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 100),
 
-                  // Header (Logo + Title)
+                  //Header (Logo + Title)
                   const AuthHeader(title: 'Login'),
                   const SizedBox(height: 40),
 
-                  // Email Field
+                  //Email Field
                   CustomTextField(
                     label: 'Email',
                     hintText: 'abc@example.com',
@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Password Field
+                  //Password Field
                   PasswordField(
                     label: 'Password',
                     hintText: '••••••••••••••••••••',
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 25),
 
-                  // Remember Me & Forgot Password
+                  //Remember Me & Forgot Password
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
 
-                  // Login Button
+                  //Login Button
                   AuthButton(
                     text: 'Log In',
                     isLoading: isLoading,
@@ -203,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  // Or login with
+                  //login with
                   const Center(
                     child: Text(
                       'Or login with',
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  // Social Login Buttons
+                  //Social Login Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -235,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  // Sign Up Link
+                  //Sign Up Link
                   AuthFooter(
                     questionText: "Don't have an account? ",
                     actionText: 'Sign Up',

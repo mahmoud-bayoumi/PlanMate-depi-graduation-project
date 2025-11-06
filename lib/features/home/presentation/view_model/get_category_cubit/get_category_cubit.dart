@@ -62,7 +62,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
               //print('Failed to parse task ${taskDoc.id}: $err');
               continue; // نكمل الباقي
             }
-          } // end tasks loop
+          }
 
           try {
             final event = EventModel.fromMap(eventData, taskList);
@@ -72,7 +72,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
             //print('Failed to parse event ${eventDoc.id}: $err');
             continue;
           }
-        } // end events loop
+        } 
 
         try {
           final category = CategoryModel.fromMap(categoryData, eventList);
@@ -81,7 +81,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
           //print('Failed to parse category ${categoryDoc.id}: $err');
           continue;
         }
-      } // end categories loop
+      } 
 
       //print('categories: ${categoryList.length}');
       final totalEvents = categoryList.fold<int>(
@@ -157,7 +157,7 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
               //print('Failed to parse task ${taskDoc.id}: $err');
               continue;
             }
-          } // end tasks loop
+          } 
 
           try {
             // EventModel.fromMap يأخذ (Map, List<Task>)
@@ -167,8 +167,8 @@ class GetCategoryCubit extends Cubit<GetCategoryState> {
             //print('Failed to parse event ${eventDoc.id}: $err');
             continue;
           }
-        } // end events loop
-      } // end categories loop
+        } 
+      }
 
       // خزن محليًا في حال احتجت تستخدمه من خارج
       eventList = localEventList;

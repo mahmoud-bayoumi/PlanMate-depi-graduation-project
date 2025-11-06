@@ -54,7 +54,7 @@ class _ResetScreenState extends State<ResetScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title
+                //Title
                 const Text(
                   'Reset Password',
                   style: TextStyle(
@@ -65,7 +65,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Description
+                //Description
                 const Text(
                   'Please enter your email address to request a password reset.',
                   style: TextStyle(
@@ -76,7 +76,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Email Label
+                //Email Label
                 const Text(
                   'Email',
                   style: TextStyle(
@@ -87,7 +87,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Email TextField
+                //Email TextField
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -120,7 +120,7 @@ class _ResetScreenState extends State<ResetScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Reset Button
+                //Reset Button
                 SizedBox(
                   width: double.infinity,
                   height: 65,
@@ -144,7 +144,7 @@ class _ResetScreenState extends State<ResetScreen> {
                     ),
                     child: Stack(
                       children: [
-                        // Centered text
+                        //Centered text
                         const Center(
                           child: Text(
                             'SEND',
@@ -157,7 +157,7 @@ class _ResetScreenState extends State<ResetScreen> {
                             ),
                           ),
                         ),
-                        // Arrow on the right
+                        //Arrow on the right
                         Positioned(
                           right: 0,
                           top: 0,

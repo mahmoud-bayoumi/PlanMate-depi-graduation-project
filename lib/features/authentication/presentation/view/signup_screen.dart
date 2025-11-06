@@ -69,7 +69,7 @@ class _SignUpState extends State<SignUpScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title
+                  //Title
                   const Center(
                     child: Text(
                       'Sign Up',
@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // First Name Label
+                  //First Name Label
                   const Text(
                     'First Name',
                     style: TextStyle(
@@ -93,7 +93,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // First Name TextField
+                  //First Name TextField
                   TextFormField(
                     controller: firstNameController,
                     decoration: InputDecoration(
@@ -125,7 +125,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  // Last Name Label
+                  //Last Name Label
                   const Text(
                     'Last Name',
                     style: TextStyle(
@@ -136,7 +136,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Last Name TextField
+                  //Last Name TextField
                   TextFormField(
                     controller: lastNameController,
                     decoration: InputDecoration(
@@ -168,7 +168,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  // Email Label
+                  //Email Label
                   const Text(
                     'Email',
                     style: TextStyle(
@@ -179,7 +179,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Email TextField
+                  //Email TextField
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -212,7 +212,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  // Password Label
+                  //Password Label
                   const Text(
                     'Password',
                     style: TextStyle(
@@ -223,7 +223,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // Password TextField
+                  //Password TextField
                   TextFormField(
                     controller: passwordController,
                     obscureText: !isPasswordVisible,
@@ -270,7 +270,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  // Sign Up Button
+                  //Sign Up Button
                   SizedBox(
                     width: double.infinity,
                     height: 55,
@@ -338,7 +338,7 @@ class _SignUpState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Login Link
+                  //Login Link
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
