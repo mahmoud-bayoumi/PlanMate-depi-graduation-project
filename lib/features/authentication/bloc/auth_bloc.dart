@@ -10,6 +10,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   StreamSubscription<User?>? _authUser;
 
   AuthBloc(this._authService) : super(AuthInitial()) {
+    // Event handlers for each authentication action
     on<AuthStarted>(onStarted);
     on<AuthUserChanged>(onUserChanged);
     on<AuthSignInWithEmail>(onSignInEmail);
@@ -22,10 +23,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> onStarted(AuthStarted event, Emitter<AuthState> emit) async {
     await _authUser?.cancel();
 
+    // Listen for login or logout events
     _authUser = _authService.authStateChanges().listen((userData) {
       add(AuthUserChanged(user: userData));
     });
 
+    // Check if user already logged in
     final currentUser = _authService.getCurrentUser();
     if (currentUser != null) {
       emit(AuthAuthenticated(user: currentUser));
@@ -36,10 +39,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   Future<void> close() {
-    _authUser?.cancel();
+    _authUser?.cancel(); // Cancel auth stream
     return super.close();
   }
 
+  // Check if user is present or not (authenticated or unauthenticated)
   Future<void> onUserChanged(
     AuthUserChanged event,
     Emitter<AuthState> emit,
@@ -51,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // Sign in with email and password
   Future<void> onSignInEmail(
     AuthSignInWithEmail event,
     Emitter<AuthState> emit,
@@ -69,6 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // Sign up with email and password
   Future<void> onSignUpEmail(
     AuthSignUpWithEmail event,
     Emitter<AuthState> emit,
@@ -93,6 +99,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // Sign in with Google
   Future<void> onSignInGoogle(
     AuthSignInWithGoogle event,
     Emitter<AuthState> emit,
@@ -111,6 +118,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // Reset password
   Future<void> onResetPassword(
     AuthResetPassword event,
     Emitter<AuthState> emit,
@@ -128,6 +136,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // Sign out
   Future<void> onSignOut(AuthSignOut event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
 

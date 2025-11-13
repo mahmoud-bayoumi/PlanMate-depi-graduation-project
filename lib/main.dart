@@ -12,7 +12,6 @@ import 'features/home/data/services/user_event_service.dart';
 import 'features/home/presentation/view_model/favourite_cubit/favourite_cubit.dart';
 import 'features/home/presentation/view_model/get_category_cubit/get_category_cubit.dart';
 import 'features/home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
-import 'features/home/presentation/view_model/user_events_bloc/user_events_event.dart';
 import 'features/profile/bloc/profile_bloc.dart';
 import 'features/profile/bloc/profile_event.dart';
 import 'features/profile/services/profile_service.dart';
@@ -65,8 +64,7 @@ class _PlanMateAppState extends State<PlanMateApp> {
                   time: '',
                   address: '',
                   phone: '',
-                  tasks:
-                      const [], 
+                  tasks: const [],
                 ),
               ),
             ),

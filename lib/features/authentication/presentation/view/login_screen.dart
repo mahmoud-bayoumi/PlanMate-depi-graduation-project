@@ -23,17 +23,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Controllers for text fields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool rememberMe = true;
+  bool rememberMe = true; // Default to remember me
 
   @override
   void dispose() {
+    // Clean up
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
+  // Handle login button press (validates user input)
   void _handleLogin(BuildContext context) {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
@@ -71,17 +74,19 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
+          // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
               backgroundColor: Colors.red,
             ),
           );
+          // Navigate to home screen
         } else if (state is AuthAuthenticated) {
-          //Trigger user events loading after successful login
+          // Loading user events
           context.read<UserEventsBloc>().add(LoadUserEvents());
 
-          //Navigate to main view
+          // Navigate to main view
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const NavigateMainView()),
             (route) => false,
@@ -101,11 +106,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 100),
 
-                  //Header (Logo + Title)
+                  // Header (Logo + Title)
                   const AuthHeader(title: 'Login'),
                   const SizedBox(height: 40),
 
-                  //Email Field
+                  // Email Field
                   CustomTextField(
                     label: 'Email',
                     hintText: 'abc@example.com',
@@ -114,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  //Password Field
+                  // Password Field
                   PasswordField(
                     label: 'Password',
                     hintText: '••••••••••••••••••••',
@@ -122,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 25),
 
-                  //Remember Me & Forgot Password
+                  // Remember Me & Forgot Password
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -195,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
 
-                  //Login Button
+                  // Login Button
                   AuthButton(
                     text: 'Log In',
                     isLoading: isLoading,
@@ -203,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  //login with
+                  // login with
                   const Center(
                     child: Text(
                       'Or login with',
@@ -217,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  //Social Login Buttons
+                  // Social Login Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -235,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 30),
 
-                  //Sign Up Link
+                  // Sign Up Link
                   AuthFooter(
                     questionText: "Don't have an account? ",
                     actionText: 'Sign Up',

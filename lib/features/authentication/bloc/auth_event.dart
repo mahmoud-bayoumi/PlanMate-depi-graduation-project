@@ -1,13 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// Events (user actions)
 abstract class AuthEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
+// When the app starts
 class AuthStarted extends AuthEvent {}
 
+// When user logs in/out
 class AuthUserChanged extends AuthEvent {
   final User? user;
 
@@ -17,6 +20,7 @@ class AuthUserChanged extends AuthEvent {
   List<Object?> get props => [user];
 }
 
+// When user tries to sign in with email and password
 class AuthSignInWithEmail extends AuthEvent {
   final String email;
   final String password;
@@ -27,6 +31,7 @@ class AuthSignInWithEmail extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
+// When user tries to sign up with email and password
 class AuthSignUpWithEmail extends AuthEvent {
   final String email;
   final String password;
@@ -46,8 +51,10 @@ class AuthSignUpWithEmail extends AuthEvent {
   List<Object?> get props => [email, password, firstName, lastName, birthDate];
 }
 
+// When user tries to sign in with Google
 class AuthSignInWithGoogle extends AuthEvent {}
 
+// When user requests a password reset
 class AuthResetPassword extends AuthEvent {
   final String email;
 
@@ -57,4 +64,5 @@ class AuthResetPassword extends AuthEvent {
   List<Object?> get props => [email];
 }
 
+// When user signs out
 class AuthSignOut extends AuthEvent {}
