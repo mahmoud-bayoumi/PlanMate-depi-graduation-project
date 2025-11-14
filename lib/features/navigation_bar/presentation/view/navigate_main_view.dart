@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../core/utils/constants.dart';
+import '../../../../your_event_list_screen.dart';
+import '../../../ai_chat/presentation/views/ai_chat_view.dart';
 import '../../../favourites/presentation/view/favourite_view_body.dart';
 import '../../../home/presentation/view/home_view_body.dart';
 import '../../../home/presentation/view/widgets/icon_with_under_line.dart';
 import '../../../home/presentation/view_model/user_events_bloc/user_events_bloc.dart';
 import '../../../home/presentation/view_model/user_events_bloc/user_events_event.dart';
 import '../../../profile/presentation/views/profile_view.dart';
-import '../../../../your_event_list_screen.dart';
 
 class NavigateMainView extends StatefulWidget {
   const NavigateMainView({super.key});
@@ -31,6 +33,15 @@ class _NavigateMainViewState extends State<NavigateMainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const PlanMateAIChatView()),
+          );
+        },
+        child: const Icon(Icons.smart_toy, color: Color(kPrimaryColor)),
+      ),
       body: SafeArea(
         child: IndexedStack(
           index: currentIndex,
