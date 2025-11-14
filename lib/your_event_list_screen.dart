@@ -67,64 +67,77 @@ class EventsListScreen extends StatelessWidget {
       children: event.tasks.isEmpty
           ? [const ListTile(title: Text("No tasks yet"))]
           : event.tasks
-                .map((task) => _buildTaskItem(context, event, task))
+                .map((task) => _TaskItem(event: event, task: task))
                 .toList(),
     );
   }
+}
 
-  Widget _buildTaskItem(BuildContext context, EventModel event, Task task) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        //local stage state (0 = Join Now, 1 = Uncompleted, 2 = Completed)
-        int stage = task.done ? 2 : 0;
+class _TaskItem extends StatefulWidget {
+  final EventModel event;
+  final Task task;
 
-        return ListTile(
-          title: Text(task.title),
-          subtitle: Text(task.description),
-          trailing: StatefulBuilder(
-            builder: (context, localSetState) {
-              return TextButton(
-                onPressed: stage == 2
-                    ? null
-                    : () {
-                        if (stage == 0) {
-                          //first click —> change to Uncompleted
-                          localSetState(() => stage = 1);
-                        } else if (stage == 1) {
-                          // second click —> mark completed & update Firestore
-                          localSetState(() => stage = 2);
+  const _TaskItem({required this.event, required this.task});
 
-                          context.read<UserEventsBloc>().add(
-                            MarkTaskDone(event.title, task.title),
-                          );
+  @override
+  State<_TaskItem> createState() => _TaskItemState();
+}
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                "'${task.title}' marked as completed!",
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                child: Text(
-                  stage == 0
-                      ? "Join Now"
-                      : stage == 1
-                      ? "Uncompleted"
-                      : "Completed",
-                  style: TextStyle(
-                    color: stage == 2
-                        ? Colors.green
-                        : (stage == 1 ? Colors.red : Colors.red),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              );
-            },
+class _TaskItemState extends State<_TaskItem> {
+  late int stage;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize stage: 0 = Join Now, 1 = Uncompleted, 2 = Completed
+    stage = widget.task.done ? 2 : 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(widget.task.title),
+      subtitle: Text(widget.task.description),
+      trailing: TextButton(
+        onPressed: stage == 2
+            ? null
+            : () {
+                setState(() {
+                  if (stage == 0) {
+                    // First click —> change to Uncompleted
+                    stage = 1;
+                  } else if (stage == 1) {
+                    // Second click —> mark completed & update Firestore
+                    stage = 2;
+
+                    context.read<UserEventsBloc>().add(
+                      MarkTaskDone(widget.event.title, widget.task.title),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "'${widget.task.title}' marked as completed!",
+                        ),
+                      ),
+                    );
+                  }
+                });
+              },
+        child: Text(
+          stage == 0
+              ? "Join Now"
+              : stage == 1
+              ? "Uncompleted"
+              : "Completed",
+          style: TextStyle(
+            color: stage == 2
+                ? Colors.green
+                : Colors.red,
+            fontWeight: FontWeight.bold,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
