@@ -8,13 +8,16 @@ import 'chat_state.dart';
 const String genralChatId = 'general_chat';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
   StreamSubscription? _messagesSubscription;
   User? get currentUser => _auth.currentUser;
 
-  ChatBloc() : super(ChatInitial()) {
+  ChatBloc({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance,
+      super(ChatInitial()) {
     on<LoadMessages>(_onLoadMessages);
     on<SendMessage>(_onSendMessage);
     on<MessagesUpdated>(_onMessagesUpdated);
