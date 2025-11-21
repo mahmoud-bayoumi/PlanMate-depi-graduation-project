@@ -59,7 +59,7 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // 🔹 Share button (works for both Web and Mobile)
+                  // Share button (works for both Web and Mobile)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -156,7 +156,7 @@ https://planmateapp.com/event/${Uri.encodeComponent(eventModel.title)}
               ),
             ),
 
-            // 🔹 Add to List button
+            // Add to List button
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
