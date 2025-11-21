@@ -59,7 +59,7 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  //Share button (works for both Web and Mobile)
+                  // 🔹 Share button (works for both Web and Mobile)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -156,7 +156,7 @@ https://planmateapp.com/event/${Uri.encodeComponent(eventModel.title)}
               ),
             ),
 
-            //Add to List button
+            // 🔹 Add to List button
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -167,13 +167,17 @@ https://planmateapp.com/event/${Uri.encodeComponent(eventModel.title)}
                     final bloc = context.read<UserEventsBloc>();
                     bloc.add(AddUserEvent(eventModel));
 
+                    bool errorOccurred = false;
+                    
                     final subscription = bloc.stream.listen((state) {
                       if (state is UserEventsError && context.mounted) {
+                        errorOccurred = true;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.message)),
                         );
                       } else if (state is UserEventsLoaded &&
-                          context.mounted) {
+                          context.mounted && !errorOccurred) {
+                        // Only show success message if no error occurred
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Event added to your list!"),
