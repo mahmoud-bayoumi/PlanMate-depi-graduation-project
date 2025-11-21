@@ -33,6 +33,9 @@ class UserEventsBloc extends Bloc<UserEventsEvent, UserEventsState> {
   }
 
   Future<void> _onAddUserEvent(event, emit) async {
+    // Store current state before attempting to add
+    final previousState = state;
+    
     try {
       await _service.addEventToUserList(event.event);
 
@@ -40,10 +43,30 @@ class UserEventsBloc extends Bloc<UserEventsEvent, UserEventsState> {
       emit(UserEventsLoaded(updatedEvents));
     } catch (e) {
       final errorMessage = e.toString();
+      
+      // If event already exists, emit error but keep the current loaded state
       if (errorMessage.contains("already in your list")) {
         emit(UserEventsError("Event already in your list!"));
+        
+        // Immediately restore the previous state if it was loaded
+        if (previousState is UserEventsLoaded) {
+          emit(UserEventsLoaded(previousState.events));
+        } else {
+          // If previous state wasn't loaded, fetch current events
+          try {
+            final currentEvents = await _service.getUserEvents();
+            emit(UserEventsLoaded(currentEvents));
+          } catch (_) {
+            // If fetching fails, just keep the error state
+          }
+        }
       } else {
         emit(UserEventsError(errorMessage));
+        
+        // For other errors, also try to restore previous state
+        if (previousState is UserEventsLoaded) {
+          emit(UserEventsLoaded(previousState.events));
+        }
       }
     }
   }
