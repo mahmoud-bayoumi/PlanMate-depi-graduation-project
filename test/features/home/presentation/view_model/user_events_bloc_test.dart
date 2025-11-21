@@ -51,6 +51,16 @@ void main() {
       tasks: [Task(title: 'Task 1', description: 'Desc', done: false)],
     );
 
+    final mockEvent2 = EventModel(
+      title: 'Test Event 2',
+      image: '',
+      date: '2025-11-09',
+      time: '9:00 PM',
+      address: 'Cairo',
+      phone: '0100000001',
+      tasks: [],
+    );
+
     setUp(() {
       mockService = MockUserEventService();
     });
@@ -70,14 +80,20 @@ void main() {
     );
 
     blocTest<UserEventsBloc, UserEventsState>(
-      'emits [Error] when addEvent throws',
+      'emits [Error] when addEvent throws generic error',
       build: () {
         when(mockService.addEventToUserList(mockEvent))
             .thenThrow(Exception('Failed'));
         return UserEventsBloc(mockService);
       },
       act: (bloc) => bloc.add(AddUserEvent(mockEvent)),
-      expect: () => [isA<UserEventsError>()],
+      expect: () => [
+        isA<UserEventsError>().having(
+          (state) => state.message,
+          'message',
+          contains('Failed'),
+        ),
+      ],
       verify: (_) {
         verify(mockService.addEventToUserList(mockEvent)).called(1);
       },
@@ -101,10 +117,12 @@ void main() {
     );
 
     blocTest<UserEventsBloc, UserEventsState>(
-      'emits error with custom message when event already exists',
+      'emits [Error, Loaded] when event already exists and fetches current events',
       build: () {
         when(mockService.addEventToUserList(mockEvent))
             .thenThrow(Exception('already in your list'));
+        when(mockService.getUserEvents())
+            .thenAnswer((_) async => [mockEvent2]);
         return UserEventsBloc(mockService);
       },
       act: (bloc) => bloc.add(AddUserEvent(mockEvent)),
@@ -114,7 +132,71 @@ void main() {
           'message',
           'Event already in your list!',
         ),
+        isA<UserEventsLoaded>().having(
+          (state) => state.events,
+          'events',
+          [mockEvent2],
+        ),
       ],
+      verify: (_) {
+        verify(mockService.addEventToUserList(mockEvent)).called(1);
+        verify(mockService.getUserEvents()).called(1);
+      },
+    );
+
+    blocTest<UserEventsBloc, UserEventsState>(
+      'emits [Error, Loaded] when event already exists with previous loaded state',
+      build: () {
+        when(mockService.addEventToUserList(mockEvent))
+            .thenThrow(Exception('already in your list'));
+        return UserEventsBloc(mockService);
+      },
+      seed: () => UserEventsLoaded([mockEvent2]),
+      act: (bloc) => bloc.add(AddUserEvent(mockEvent)),
+      expect: () => [
+        isA<UserEventsError>().having(
+          (state) => state.message,
+          'message',
+          'Event already in your list!',
+        ),
+        isA<UserEventsLoaded>().having(
+          (state) => state.events,
+          'events',
+          [mockEvent2],
+        ),
+      ],
+      verify: (_) {
+        verify(mockService.addEventToUserList(mockEvent)).called(1);
+        // getUserEvents should NOT be called because we restore from previous state
+        verifyNever(mockService.getUserEvents());
+      },
+    );
+
+    blocTest<UserEventsBloc, UserEventsState>(
+      'emits [Error, Loaded] when generic error occurs with previous loaded state',
+      build: () {
+        when(mockService.addEventToUserList(mockEvent))
+            .thenThrow(Exception('Network error'));
+        return UserEventsBloc(mockService);
+      },
+      seed: () => UserEventsLoaded([mockEvent2]),
+      act: (bloc) => bloc.add(AddUserEvent(mockEvent)),
+      expect: () => [
+        isA<UserEventsError>().having(
+          (state) => state.message,
+          'message',
+          contains('Network error'),
+        ),
+        isA<UserEventsLoaded>().having(
+          (state) => state.events,
+          'events',
+          [mockEvent2],
+        ),
+      ],
+      verify: (_) {
+        verify(mockService.addEventToUserList(mockEvent)).called(1);
+        verifyNever(mockService.getUserEvents());
+      },
     );
 
     blocTest<UserEventsBloc, UserEventsState>(
@@ -148,6 +230,47 @@ void main() {
       expect: () => [isA<UserEventsLoaded>()],
       verify: (_) {
         verify(mockService.markTaskAsDone('Test Event', 'Task 1')).called(1);
+        verify(mockService.getUserEvents()).called(1);
+      },
+    );
+
+    blocTest<UserEventsBloc, UserEventsState>(
+      'emits [Error] when MarkTaskDone fails',
+      build: () {
+        when(mockService.markTaskAsDone('Test Event', 'Task 1'))
+            .thenThrow(Exception('Task not found'));
+        return UserEventsBloc(mockService);
+      },
+      act: (bloc) => bloc.add(const MarkTaskDone('Test Event', 'Task 1')),
+      expect: () => [
+        isA<UserEventsError>().having(
+          (state) => state.message,
+          'message',
+          contains('Task not found'),
+        ),
+      ],
+    );
+
+    blocTest<UserEventsBloc, UserEventsState>(
+      'emits only [Error] when event already exists and fetching current events fails',
+      build: () {
+        when(mockService.addEventToUserList(mockEvent))
+            .thenThrow(Exception('already in your list'));
+        when(mockService.getUserEvents())
+            .thenThrow(Exception('Network error'));
+        return UserEventsBloc(mockService);
+      },
+      act: (bloc) => bloc.add(AddUserEvent(mockEvent)),
+      expect: () => [
+        isA<UserEventsError>().having(
+          (state) => state.message,
+          'message',
+          'Event already in your list!',
+        ),
+        // No loaded state because fetching fails and there's no previous state
+      ],
+      verify: (_) {
+        verify(mockService.addEventToUserList(mockEvent)).called(1);
         verify(mockService.getUserEvents()).called(1);
       },
     );
