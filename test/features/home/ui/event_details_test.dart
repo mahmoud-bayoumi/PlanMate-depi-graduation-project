@@ -13,7 +13,6 @@ import 'package:planmate_app/features/home/data/services/user_event_service.dart
 class MockUserEventService extends Mock implements UserEventService {}
 class FakeEventModel extends Fake implements EventModel {}
 
-
 void main() {
   final testEvent = EventModel(
     title: 'Test Event',
@@ -26,19 +25,18 @@ void main() {
   );
 
   setUpAll(() {
-  registerFallbackValue(FakeEventModel());
+    registerFallbackValue(FakeEventModel());
 
-  registerFallbackValue(EventModel(
-    title: '',
-    image: '',
-    date: '',
-    time: '',
-    address: '',
-    phone: '',
-    tasks: const [],
-  ));
-});
-
+    registerFallbackValue(EventModel(
+      title: '',
+      image: '',
+      date: '',
+      time: '',
+      address: '',
+      phone: '',
+      tasks: const [],
+    ));
+  });
 
   Widget createWidgetUnderTest(EventModel event, UserEventsBloc bloc) {
     return MaterialApp(
@@ -148,58 +146,138 @@ void main() {
       expect(find.text('Test Event'), findsNothing);
     });
 
-testWidgets('tapping Add To List button triggers bloc event', (tester) async {
-  //Arrange: mock service responses
-  when(() => mockService.addEventToUserList(testEvent))
-      .thenAnswer((_) async {});
-  when(() => mockService.getUserEvents())
-      .thenAnswer((_) async => [testEvent]);
+    testWidgets('tapping Add To List button triggers bloc event and shows success snackbar', 
+        (tester) async {
+      // Arrange: mock service responses
+      when(() => mockService.addEventToUserList(any()))
+          .thenAnswer((_) async {});
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
 
-  //Build the widget
-  await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
-  await tester.pumpAndSettle();
+      // Build the widget
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
 
-  //Scroll if needed
-  await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
-  await tester.pumpAndSettle();
+      // Scroll if needed
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
 
-  //Tap Add To List
-  await tester.tap(find.text('Add To List'));
+      // Tap Add To List - wrap in runAsync to handle async operations
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        
+        // Wait a bit for async operations
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      // Pump to process UI updates
+      await tester.pumpAndSettle();
 
-  //Simulate timer in widget
-  await tester.pump(const Duration(seconds: 2));
+      // Verify service was called
+      verify(() => mockService.addEventToUserList(any())).called(1);
+      verify(() => mockService.getUserEvents()).called(1);
 
-  //Wait for async call to complete
-  await untilCalled(() => mockService.addEventToUserList(testEvent));
+      // Verify success snackbar appears
+      expect(find.text('Event added to your list!'), findsOneWidget);
+    });
 
-  //Assert
-  verify(() => mockService.addEventToUserList(testEvent)).called(1);
-});
+    testWidgets('shows only error snackbar when event already exists', (tester) async {
+      // Mock the service to throw "already in list" error
+      when(() => mockService.addEventToUserList(any()))
+          .thenThrow(Exception('already in your list'));
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
 
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
 
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
 
-    testWidgets('bloc emits error state when add event fails', (tester) async {
-  when(() => mockService.addEventToUserList(testEvent))
-      .thenThrow(Exception('already in your list'));
+      // Tap Add To List - wrap in runAsync
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        
+        // Wait for async operations
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      await tester.pumpAndSettle();
 
-  await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
-  await tester.pumpAndSettle();
+      // Verify service was called
+      verify(() => mockService.addEventToUserList(any())).called(1);
 
-  await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
-  await tester.pumpAndSettle();
+      // The bloc should emit Error then Loaded (to restore state)
+      // But only error snackbar should show due to errorOccurred flag
+      expect(find.text('Event already in your list!'), findsOneWidget);
+      expect(find.text('Event added to your list!'), findsNothing);
+    });
 
-  await tester.tap(find.text('Add To List'));
-  await tester.pump(); 
-  await tester.pump(const Duration(seconds: 2)); 
+    testWidgets('shows only error snackbar when generic error occurs with previous state', 
+        (tester) async {
+      // Set up previous loaded state
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
+      
+      // Load initial state
+      await tester.runAsync(() async {
+        bloc.add(LoadUserEvents());
+        await Future.delayed(const Duration(milliseconds: 100));
+      });
+      
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
 
-  await untilCalled(() => mockService.addEventToUserList(testEvent));
+      // Now mock failure for add event
+      when(() => mockService.addEventToUserList(any()))
+          .thenThrow(Exception('Network error'));
 
-  verify(() => mockService.addEventToUserList(testEvent)).called(1);
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
 
-  expect(bloc.state, isA<UserEventsError>());
-  expect((bloc.state as UserEventsError).message, 'Event already in your list!');
-});
+      // Tap Add To List
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      await tester.pumpAndSettle();
 
+      // Verify error snackbar shows but not success
+      expect(find.text('Exception: Network error'), findsOneWidget);
+      expect(find.text('Event added to your list!'), findsNothing);
+    });
+
+    testWidgets('bloc emits correct final state when add event fails', (tester) async {
+      when(() => mockService.addEventToUserList(any()))
+          .thenThrow(Exception('already in your list'));
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
+
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+
+      // Tap and wait for async completion
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      await tester.pumpAndSettle();
+
+      verify(() => mockService.addEventToUserList(any())).called(1);
+
+      // After the error, the bloc restores the state to UserEventsLoaded
+      // So the final state should be UserEventsLoaded, not UserEventsError
+      expect(bloc.state, isA<UserEventsLoaded>());
+    });
 
     testWidgets('share button is tappable', (WidgetTester tester) async {
       await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
@@ -252,9 +330,73 @@ testWidgets('tapping Add To List button triggers bloc event', (tester) async {
       expect(find.text('Event No Tasks'), findsOneWidget);
     });
   });
+
+  group('EventDetailsScreen Snackbar Behavior', () {
+    late MockUserEventService mockService;
+    late UserEventsBloc bloc;
+
+    setUp(() {
+      mockService = MockUserEventService();
+      bloc = UserEventsBloc(mockService);
+    });
+
+    tearDown(() {
+      bloc.close();
+    });
+
+    testWidgets('does not show success snackbar after error snackbar', (tester) async {
+      // This test verifies the errorOccurred flag works correctly
+      when(() => mockService.addEventToUserList(any()))
+          .thenThrow(Exception('already in your list'));
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
+
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      await tester.pumpAndSettle();
+
+      // Only error snackbar should be present
+      expect(find.text('Event already in your list!'), findsOneWidget);
+      expect(find.text('Event added to your list!'), findsNothing);
+
+      // Even after waiting for state restoration
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.text('Event added to your list!'), findsNothing);
+    });
+
+    testWidgets('shows success snackbar only on first successful add', (tester) async {
+      when(() => mockService.addEventToUserList(any()))
+          .thenAnswer((_) async {});
+      when(() => mockService.getUserEvents())
+          .thenAnswer((_) async => [testEvent]);
+
+      await tester.pumpWidget(createWidgetUnderTest(testEvent, bloc));
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -400));
+      await tester.pumpAndSettle();
+
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Add To List'));
+        await tester.pump();
+        await Future.delayed(const Duration(milliseconds: 200));
+      });
+      
+      await tester.pumpAndSettle();
+
+      // Success snackbar should appear
+      expect(find.text('Event added to your list!'), findsOneWidget);
+      expect(find.text('Event already in your list!'), findsNothing);
+    });
+  });
 }
-
-
-
-
-
