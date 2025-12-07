@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+
 import 'widgets/chat_input.dart';
 import 'widgets/message_list.dart';
 
@@ -22,15 +23,23 @@ class _PlanMateAIChatViewState extends State<PlanMateAIChatView> {
   @override
   void initState() {
     super.initState();
+
     final apiKey = dotenv.env['GEMINI_API_KEY'];
     if (apiKey == null) {
       throw Exception("API Key not found!");
     }
-    _model = GenerativeModel(
-      model: 'models/gemini-2.5-flash',
-      apiKey: apiKey,
-    );
+
+    _model = GenerativeModel(model: 'models/gemini-2.5-flash', apiKey: apiKey);
+
     _chat = _model.startChat();
+
+    // ---------- 👇 Initial welcome message ----------
+    _messages.add({
+      'role': 'bot',
+      'text':
+          "👋 Hello! I'm your PlanMate AI assistant.\nHow can I help you today?",
+    });
+    // ------------------------------------------------
   }
 
   Future<void> _sendMessage() async {
@@ -45,6 +54,7 @@ class _PlanMateAIChatViewState extends State<PlanMateAIChatView> {
 
     try {
       final response = await _chat.sendMessage(Content.text(userMessage));
+
       setState(() {
         _messages.add({'role': 'bot', 'text': response.text ?? "No response"});
       });
