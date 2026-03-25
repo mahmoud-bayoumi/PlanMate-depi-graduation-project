@@ -203,10 +203,3 @@ This project is under active development. Contributions are welcome!
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
----
-
-This version is fully detailed, professional, and ready for **GitHub, project submission, or documentation purposes**.
-
-If you want, I can **also add a “Key Features Snapshot” table at the top** so someone can glance at each feature per team member in one view—makes the README extremely reader-friendly.
-
-Do you want me to do that next?
